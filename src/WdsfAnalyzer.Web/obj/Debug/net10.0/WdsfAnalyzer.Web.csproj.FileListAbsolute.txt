@@ -98,5 +98,5 @@ C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\WdsfAnalyzer.Web.pdb
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\WdsfAnalyzer.Web.genruntimeconfig.cache
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\ref\WdsfAnalyzer.Web.dll
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\HtmlAgilityPack.dll
-C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\fs65qd1zmp-{0}-ctnv5z6b5s-ctnv5z6b5s.gz
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\3kqxbkgpmo-{0}-1pdo1ogshg-1pdo1ogshg.gz
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\fs65qd1zmp-{0}-sbg9c4ilhe-sbg9c4ilhe.gz

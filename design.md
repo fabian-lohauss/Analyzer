@@ -315,7 +315,7 @@ Every competition cell shows F first and P second. If no final was reached, F di
 
 Cell details use rounds as rows in reverse progression order, beginning with the final, and dances as columns:
 
-- Final: achieved dance place followed by the adjudicator's rank in parentheses
+- Final: achieved dance place on a second line in the dance header; the Final row contains only the adjudicator's rank
 - Preliminary: panel-average round total followed by the adjudicator's round total in parentheses
 - Preliminary per dance: panel cross count followed by `+`, `-`, or `/` for awarded, not awarded, or unavailable
 

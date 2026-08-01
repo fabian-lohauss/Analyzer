@@ -87,7 +87,10 @@ td small { display:block; margin-top:5px; color:#686b68; }
 .round-detail-table { min-width:640px; }
 .round-detail-table th,.round-detail-table td { min-width:100px; padding:12px; text-align:center; }
 .round-detail-table th:first-child { min-width:120px; text-align:left; }
+.round-detail-table thead th small { display:block; margin-top:4px; color:var(--signal); font:600 15px 'DM Mono',monospace; }
 .round-detail-table tbody th { border-bottom:1px solid #dedbd2; color:var(--ink); background:transparent; font-weight:600; }
+.round-detail-table .final-row-label { white-space:nowrap; }
+.round-detail-table .final-judge-name { font-weight:400; text-transform:none; }
 .round-detail-table tbody th small { display:block; margin-top:4px; color:var(--signal); font:10px 'DM Mono',monospace; text-transform:uppercase; }
 .round-detail-table .included-round { background:#f8eee9; }
 .round-detail-table td { font:500 13px 'DM Mono',monospace; }

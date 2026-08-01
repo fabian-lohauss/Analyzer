@@ -176,20 +176,24 @@ else
                                             <div class="cell-detail-content">
                                                 <p class="eyebrow">@competition.Location · @competition.Date.ToString("MMM yy")@if (finalDetails.Count > 0 && competition.Placement.HasValue) { <text> · Final place @competition.Placement</text> }</p>
                                                 <h3>@judge.Name</h3>
-                                                <p class="detail-notation">Final: result <strong>(rank)</strong> · Preliminary: panel marks <strong>+ / -</strong></p>
+                                                <p class="detail-notation">Final: achieved place in header · <strong>adjudicator rank</strong> in row · Preliminary: panel marks <strong>+ / -</strong></p>
                                                 <div class="detail-table-shell">
                                                     <table class="round-detail-table">
-                                                        <thead><tr><th>Round</th>@foreach (var dance in dances) { <th>@dance</th> }</tr></thead>
+                                                        <thead><tr><th>Round</th>@foreach (var dance in dances)
+                                                        {
+                                                            var finalDetail = finalDetails.FirstOrDefault(item => item.Dance!.Equals(dance, StringComparison.OrdinalIgnoreCase));
+                                                            <th>@dance@if (finalDetail is not null) { <small aria-label="Achieved place @DetailNumber(finalDetail.ReferenceValue)">@DetailNumber(finalDetail.ReferenceValue)</small> }</th>
+                                                        }</tr></thead>
                                                         <tbody>
                                                         @if (finalDetails.Count > 0)
                                                         {
                                                             <tr>
-                                                                <th scope="row">Final</th>
+                                                                <th scope="row" class="final-row-label">Final <span class="final-judge-name">(@judge.Name)</span></th>
                                                                 @foreach (var dance in dances)
                                                                 {
                                                                     var detail = finalDetails.FirstOrDefault(item => item.Dance!.Equals(dance, StringComparison.OrdinalIgnoreCase));
                                                                     if (detail is null) { <td class="missing">—</td> }
-                                                                    else { <td>@DetailNumber(detail.ReferenceValue) <strong>(@DetailNumber(detail.JudgeValue))</strong></td> }
+                                                                    else { <td><strong>@DetailNumber(detail.JudgeValue)</strong></td> }
                                                                 }
                                                             </tr>
                                                         }
