@@ -151,7 +151,7 @@ The app must treat preliminary rounds and final rounds differently because they 
 
 ### Preliminary Rounds
 
-In preliminary rounds, the Results page supplies each judge's round total. The separate Marks page supplies the underlying binary cross per judge, round, and dance. Per-dance details show the panel's total crosses for that couple, round, and dance, followed by the selected adjudicator's binary cross.
+In preliminary rounds, the Results page supplies each judge's round total. The separate Marks page supplies the underlying binary cross per judge, round, and dance. Per-dance details show the panel's total crosses followed by `+` when the adjudicator awarded a mark, `-` when no mark was awarded, or `/` when the dance mark is unavailable.
 
 Only the latest published preliminary round contributes to P for each competition. For finalists this is the semifinal; for non-finalists it is the last round reached. Average P gives each competition equal weight. Earlier rounds remain visible as detail but do not contribute to P.
 
@@ -311,13 +311,13 @@ P 80%
 F 100% · Δ +0.00
 ```
 
-The matrix should not show two-part preliminary/final values in every competition cell by default because that makes the overview harder to scan. Instead, each visible cell should show the progression-based value, and a hover or click detail should expose the full competition breakdown for that adjudicator.
+Every competition cell shows F first and P second. If no final was reached, F displays `-`; hover or click exposes the full competition breakdown for that adjudicator.
 
-Cell details use rounds as rows in reverse progression order, beginning with the final, and dances as columns. Each value uses compact `reference (adjudicator)` notation:
+Cell details use rounds as rows in reverse progression order, beginning with the final, and dances as columns:
 
 - Final: achieved dance place followed by the adjudicator's rank in parentheses
 - Preliminary: panel-average round total followed by the adjudicator's round total in parentheses
-- Preliminary: panel cross count followed by the adjudicator's binary cross (`0` or `1`) in parentheses
+- Preliminary per dance: panel cross count followed by `+`, `-`, or `/` for awarded, not awarded, or unavailable
 
 The detail surface does not repeat the calculated deviation. Hover provides a quick desktop preview; click, keyboard activation, or touch pins the detail until dismissed. On narrow screens it becomes a bottom sheet with horizontal table scrolling.
 
