@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "4vh7l0h4t2w=",
+  "success": true,
+  "projectFilePath": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\fabia\\.nuget\\packages\\htmlagilitypack\\1.12.4\\htmlagilitypack.1.12.4.nupkg.sha512"
+  ],
+  "logs": []
+}

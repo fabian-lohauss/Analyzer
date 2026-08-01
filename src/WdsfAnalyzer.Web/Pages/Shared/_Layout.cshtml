@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · WDSF Analyzer</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WdsfAnalyzer.Web.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <a asp-page="/Index" class="wordmark"><span>W</span> Deviation Lab</a>
+        <p>Independent analysis · official WDSF sources</p>
+    </header>
+    <div class="page-frame">
+        <main>
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="site-footer">
+        <p>Analytical signals are not evidence of bias or misconduct.</p>
+        <a href="https://www.worlddancesport.org" target="_blank" rel="noopener">worlddancesport.org ↗</a>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

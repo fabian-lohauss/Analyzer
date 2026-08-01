@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WdsfAnalyzer.Core/WdsfAnalyzer.Core.csproj" />
+    <Project Path="src/WdsfAnalyzer.Web/WdsfAnalyzer.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WdsfAnalyzer.Tests/WdsfAnalyzer.Tests.csproj" />
+  </Folder>
+</Solution>
