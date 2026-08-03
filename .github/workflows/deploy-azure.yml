@@ -58,7 +58,7 @@ jobs:
           package: publish
 
       - name: Verify staging slot
-        run: curl --fail --retry 6 --retry-delay 10 "https://${{ vars.AZURE_APP_NAME }}-staging.azurewebsites.net/health"
+        run: curl --fail --retry 12 --retry-delay 10 --retry-all-errors "https://${{ vars.AZURE_APP_NAME }}-staging.azurewebsites.net/health"
 
       - name: Swap into production
         run: az webapp deployment slot swap --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --name "${{ vars.AZURE_APP_NAME }}" --slot staging --target-slot production

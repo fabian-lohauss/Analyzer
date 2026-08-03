@@ -100,3 +100,17 @@ C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\ref\WdsfAnalyzer.Web.dl
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\HtmlAgilityPack.dll
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\3kqxbkgpmo-{0}-1pdo1ogshg-1pdo1ogshg.gz
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\fs65qd1zmp-{0}-sbg9c4ilhe-sbg9c4ilhe.gz
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Azure.Core.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Azure.Identity.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Azure.Storage.Blobs.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Azure.Storage.Common.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Microsoft.Identity.Client.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\System.ClientModel.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\System.IO.Hashing.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\System.Memory.Data.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\System.Security.Cryptography.ProtectedData.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\WdsfAnalyzer.Web.sourcelink.json
