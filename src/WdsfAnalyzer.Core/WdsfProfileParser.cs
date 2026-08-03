@@ -9,7 +9,7 @@ public sealed partial class WdsfProfileParser
 {
     private static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
 
-    public CoupleAnalysis Parse(string html, Uri profileUrl, string expectedMin, bool refreshed)
+    public CoupleAnalysis Parse(string html, Uri profileUrl, string expectedMin, DateOnly coverageStart, bool refreshed)
     {
         var document = new HtmlDocument();
         document.LoadHtml(html);
@@ -37,7 +37,7 @@ public sealed partial class WdsfProfileParser
         var partnership = ParsePartnership(document);
         var allCompetitions = ParseCompetitions(document).ToList();
         var included = allCompetitions
-            .Where(competition => competition.Date >= new DateOnly(2024, 1, 1))
+            .Where(competition => competition.Date >= coverageStart)
             .Where(competition => !IsExcluded(competition.Status))
             .OrderByDescending(competition => competition.Date)
             .ToList();
@@ -47,6 +47,7 @@ public sealed partial class WdsfProfileParser
             partnership,
             included,
             allCompetitions.Count - included.Count,
+            coverageStart,
             DateTimeOffset.UtcNow,
             refreshed);
     }

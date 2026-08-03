@@ -23,12 +23,13 @@
         <p class="lede">Inspect a couple's competition record before comparing adjudicator marks across rounds and dances.</p>
     </div>
     <form method="post" class="min-form" data-analysis-form>
-        <label asp-for="Min">Partner MIN</label>
         <div class="input-row">
-            <input asp-for="Min" inputmode="numeric" autocomplete="off" placeholder="10006615" />
+            <label asp-for="Min">Partner MIN<input asp-for="Min" inputmode="numeric" autocomplete="off" placeholder="10006615" /></label>
+            <label asp-for="CoverageStart">Coverage from<input asp-for="CoverageStart" type="month" max="@Model.MaximumCoverageMonth" /></label>
             <button type="submit">Analyze</button>
         </div>
         <span asp-validation-for="Min" class="field-error"></span>
+        <span asp-validation-for="CoverageStart" class="field-error"></span>
     </form>
 </section>
 
@@ -42,7 +43,7 @@
     <section class="empty-state">
         <p class="empty-index">01</p>
         <h2>Start with either partner</h2>
-        <p>The current partnership and completed WDSF competitions from 2024 onward will be resolved automatically.</p>
+        <p>The current partnership and completed WDSF competitions from the selected month onward will be resolved automatically.</p>
     </section>
 }
 else
@@ -63,6 +64,7 @@ else
             <a href="@analysis.Athlete.ProfileUrl" target="_blank" rel="noopener">WDSF profile ↗</a>
             <form method="post" data-analysis-form>
                 <input type="hidden" asp-for="Min" />
+                <input type="hidden" asp-for="CoverageStart" />
                 <button type="submit" name="refresh" value="true" class="secondary-button">Refresh source</button>
             </form>
         </div>
@@ -71,7 +73,7 @@ else
     <section class="metric-grid" aria-label="Analysis summary">
         <div><span>Included</span><strong>@analysis.Competitions.Count</strong><small>completed competitions</small></div>
         <div><span>Excluded</span><strong>@analysis.ExcludedCompetitionCount</strong><small>old or non-result entries</small></div>
-        <div><span>Coverage</span><strong>2024+</strong><small>configured analysis window</small></div>
+        <div><span>Coverage</span><strong>@analysis.CoverageStart.ToString("MMM yyyy")+</strong><small>configured analysis window</small></div>
         <div><span>Judge marks</span><strong>@judges.Sum(judge => judge.ObservationCount)</strong><small>all mode-aware observations</small></div>
     </section>
 

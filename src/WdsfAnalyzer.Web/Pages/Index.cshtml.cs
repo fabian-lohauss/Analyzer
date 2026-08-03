@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using WdsfAnalyzer.Core;
 
 namespace WdsfAnalyzer.Web.Pages;
@@ -14,24 +15,30 @@ public class IndexModel(IWdsfAnalysisSource analysisSource) : PageModel
     [RegularExpression(@"^\d{8}$", ErrorMessage = "A MIN contains eight digits.")]
     public string Min { get; set; } = DefaultMin;
 
+    [BindProperty]
+    [Required]
+    [RegularExpression(@"^\d{4}-(0[1-9]|1[0-2])$", ErrorMessage = "Select a coverage month.")]
+    public string CoverageStart { get; set; } = DefaultCoverageStart();
+
     public CoupleAnalysis? Analysis { get; private set; }
     public string? LoadError { get; private set; }
 
     public void OnGet(string? min)
     {
         Min = min ?? DefaultMin;
+        CoverageStart = DefaultCoverageStart();
     }
 
     public async Task<IActionResult> OnPostAsync(bool refresh = false, CancellationToken cancellationToken = default)
     {
-        if (!ModelState.IsValid)
+        if (!TryParseCoverageStart(out var coverageStart) || !ModelState.IsValid)
         {
             return Page();
         }
 
         try
         {
-            Analysis = await analysisSource.LoadAsync(Min, refresh, cancellationToken);
+            Analysis = await analysisSource.LoadAsync(Min, coverageStart, refresh, cancellationToken);
         }
         catch (Exception exception) when (exception is WdsfDataException or HttpRequestException or TaskCanceledException)
         {
@@ -41,5 +48,24 @@ public class IndexModel(IWdsfAnalysisSource analysisSource) : PageModel
         }
 
         return Page();
+    }
+
+    public string MaximumCoverageMonth => DateTime.UtcNow.ToString("yyyy-MM", CultureInfo.InvariantCulture);
+
+    private static string DefaultCoverageStart() =>
+        new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).AddYears(-2).ToString("yyyy-MM", CultureInfo.InvariantCulture);
+
+    private bool TryParseCoverageStart(out DateOnly coverageStart)
+    {
+        var maximum = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        if (DateTime.TryParseExact(CoverageStart, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed) && parsed <= maximum)
+        {
+            coverageStart = DateOnly.FromDateTime(parsed);
+            return true;
+        }
+
+        ModelState.AddModelError(nameof(CoverageStart), "Select a valid coverage month.");
+        coverageStart = default;
+        return false;
     }
 }

@@ -35,6 +35,7 @@ public sealed record CoupleAnalysis(
     Partnership? Partnership,
     IReadOnlyList<CompetitionEntry> Competitions,
     int ExcludedCompetitionCount,
+    DateOnly CoverageStart,
     DateTimeOffset LoadedAt,
     bool Refreshed,
     IReadOnlyList<JudgeSummary>? Judges = null);

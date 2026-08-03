@@ -12,10 +12,11 @@ public sealed class CachedWdsfAnalysisSource(
 
     public async Task<CoupleAnalysis> LoadAsync(
         string min,
+        DateOnly coverageStart,
         bool refresh,
         CancellationToken cancellationToken = default)
     {
-        if (!refresh && TryGet(min, out var cached))
+        if (!refresh && TryGet(min, coverageStart, out var cached))
         {
             return cached;
         }
@@ -24,18 +25,18 @@ public sealed class CachedWdsfAnalysisSource(
         await gate.WaitAsync(cancellationToken);
         try
         {
-            if (!refresh && TryGet(min, out cached))
+            if (!refresh && TryGet(min, coverageStart, out cached))
             {
                 return cached;
             }
 
-            if (!refresh && await persistentCache.GetAsync(min, cancellationToken) is { } persisted)
+            if (!refresh && await persistentCache.GetAsync(min, cancellationToken) is { } persisted && persisted.CoverageStart == coverageStart)
             {
                 Remember(persisted);
                 return persisted;
             }
 
-            var analysis = await inner.LoadAsync(min, refresh, cancellationToken);
+            var analysis = await inner.LoadAsync(min, coverageStart, refresh, cancellationToken);
             await persistentCache.SetAsync(analysis, cancellationToken);
             Remember(analysis);
             return analysis;
@@ -46,9 +47,11 @@ public sealed class CachedWdsfAnalysisSource(
         }
     }
 
-    private bool TryGet(string min, out CoupleAnalysis analysis)
+    private bool TryGet(string min, DateOnly coverageStart, out CoupleAnalysis analysis)
     {
-        if (aliases.TryGetValue(min, out var coupleKey) && cache.TryGetValue(coupleKey, out analysis!))
+        if (aliases.TryGetValue(min, out var coupleKey) &&
+            cache.TryGetValue(coupleKey, out analysis!) &&
+            analysis.CoverageStart == coverageStart)
         {
             return true;
         }

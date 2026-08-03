@@ -98,7 +98,6 @@ C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\WdsfAnalyzer.Web.pdb
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\WdsfAnalyzer.Web.genruntimeconfig.cache
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\ref\WdsfAnalyzer.Web.dll
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\HtmlAgilityPack.dll
-C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\fs65qd1zmp-{0}-sbg9c4ilhe-sbg9c4ilhe.gz
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Azure.Core.dll
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Azure.Identity.dll
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\Azure.Storage.Blobs.dll
@@ -114,3 +113,4 @@ C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\System.Security.Cryptog
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\bin\Debug\net10.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\WdsfAnalyzer.Web.sourcelink.json
 C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\3kqxbkgpmo-{0}-8q8toxwu3t-8q8toxwu3t.gz
+C:\Repos\Analyzer\src\WdsfAnalyzer.Web\obj\Debug\net10.0\compressed\fs65qd1zmp-{0}-hxb9e1v5ur-hxb9e1v5ur.gz

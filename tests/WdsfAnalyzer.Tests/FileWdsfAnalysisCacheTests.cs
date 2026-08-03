@@ -23,6 +23,7 @@ public sealed class FileWdsfAnalysisCacheTests
                     "10023815"),
                 [],
                 0,
+                new DateOnly(2024, 8, 1),
                 DateTimeOffset.UtcNow,
                 false,
                 [new JudgeSummary(

@@ -19,7 +19,11 @@ public sealed partial class WdsfAnalysisSource(
 {
     private static readonly Uri BaseUri = new("https://www.worlddancesport.org");
 
-    public async Task<CoupleAnalysis> LoadAsync(string min, bool refresh, CancellationToken cancellationToken = default)
+    public async Task<CoupleAnalysis> LoadAsync(
+        string min,
+        DateOnly coverageStart,
+        bool refresh,
+        CancellationToken cancellationToken = default)
     {
         if (!MinRegex().IsMatch(min))
         {
@@ -28,7 +32,7 @@ public sealed partial class WdsfAnalysisSource(
 
         var profileUrl = await ResolveProfileUrlAsync(min, cancellationToken);
         var html = await GetCachedPageAsync(profileUrl, refresh, cancellationToken);
-        var analysis = parser.Parse(html, profileUrl, min, refresh);
+        var analysis = parser.Parse(html, profileUrl, min, coverageStart, refresh);
         if (analysis.Partnership is { } partnership)
         {
             var coupleHtml = await GetCachedPageAsync(partnership.CoupleUrl, refresh, cancellationToken);

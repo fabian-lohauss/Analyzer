@@ -22,6 +22,7 @@ public sealed class WdsfProfileParserTests
             html,
             new Uri("https://www.worlddancesport.org/Athletes/Clemens-Kalmer-1b6f0824-ae43-4038-90a8-9e1401202f91"),
             "10004805",
+            new DateOnly(2024, 1, 1),
             false);
 
         Assert.Equal("Clemens Kalmer", result.Athlete.Name);
@@ -64,6 +65,7 @@ public sealed class WdsfProfileParserTests
             html,
             new Uri("https://www.worlddancesport.org/Athletes/Someone-1b6f0824-ae43-4038-90a8-9e1401202f91"),
             "99999999",
+            new DateOnly(2024, 1, 1),
             false));
     }
 }
