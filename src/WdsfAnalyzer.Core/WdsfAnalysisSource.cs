@@ -14,6 +14,7 @@ public sealed partial class WdsfAnalysisSource(
     WdsfMarksParser marksParser,
     WdsfFinalParser finalParser,
     WdsfScoresParser scoresParser,
+    WdsfCoupleParser coupleParser,
     IWdsfPageCache pageCache) : IWdsfAnalysisSource
 {
     private static readonly Uri BaseUri = new("https://www.worlddancesport.org");
@@ -28,13 +29,17 @@ public sealed partial class WdsfAnalysisSource(
         var profileUrl = await ResolveProfileUrlAsync(min, cancellationToken);
         var html = await GetCachedPageAsync(profileUrl, refresh, cancellationToken);
         var analysis = parser.Parse(html, profileUrl, min, refresh);
-        var observations = await LoadObservationsAsync(analysis, refresh, cancellationToken);
+        if (analysis.Partnership is { } partnership)
+        {
+            var coupleHtml = await GetCachedPageAsync(partnership.CoupleUrl, refresh, cancellationToken);
+            analysis = analysis with { Partnership = coupleParser.Parse(coupleHtml, partnership) };
+        }
+        var observations = await LoadObservationsAsync(analysis, cancellationToken);
         return analysis with { Judges = Summarize(observations) };
     }
 
     private async Task<AnalysisObservations> LoadObservationsAsync(
         CoupleAnalysis analysis,
-        bool refresh,
         CancellationToken cancellationToken)
     {
         using var concurrency = new SemaphoreSlim(6);
@@ -80,7 +85,7 @@ public sealed partial class WdsfAnalysisSource(
                 {
                     using var pageTimeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                     pageTimeout.CancelAfter(TimeSpan.FromSeconds(12));
-                    var html = await GetCachedPageAsync(url, refresh, pageTimeout.Token);
+                    var html = await GetCachedPageAsync(url, false, pageTimeout.Token);
                     return parse(html);
                 }
                 catch (HttpRequestException)
@@ -224,7 +229,7 @@ public sealed partial class WdsfAnalysisSource(
                     (adjustedPreliminary.TryGetValue(summary.Name, out var preliminary) ? 0.4m * Confidence(summary.PreliminaryCompetitionCount) * Percentile(preliminary, preliminaryValues) : 0) +
                     (adjustedFinal.TryGetValue(summary.Name, out var final) ? 0.6m * Confidence(summary.FinalCompetitionCount) * Percentile(final, finalValues) : 0)
             })
-            .OrderByDescending(summary => summary.OverallRanking)
+            .OrderByDescending(summary => summary.OverallSupport)
             .ThenByDescending(summary => summary.CompetitionCount)
             .ThenBy(summary => summary.Name)
             .ToList();

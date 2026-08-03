@@ -56,13 +56,15 @@ public sealed partial class WdsfProfileParser
         foreach (var row in document.DocumentNode.SelectNodes("//tr") ?? Enumerable.Empty<HtmlNode>())
         {
             var cells = Cells(row);
-            if (cells.Count < 6 || !cells.Any(cell => cell.Equals("Active", StringComparison.OrdinalIgnoreCase)))
+            var coupleAnchor = row.SelectSingleNode(".//a[contains(@href, '/Couples/')]");
+            if (cells.Count < 6 || coupleAnchor is null || !cells.Any(cell => cell.Equals("Active", StringComparison.OrdinalIgnoreCase)))
             {
                 continue;
             }
 
             DateOnly? joined = DateOnly.TryParse(cells[5], English, DateTimeStyles.None, out var parsed) ? parsed : null;
-            return new Partnership(cells[1], cells[2], joined, cells[4]);
+            var coupleUrl = new Uri(new Uri("https://www.worlddancesport.org"), WebUtility.HtmlDecode(coupleAnchor.GetAttributeValue("href", "")));
+            return new Partnership(cells[1], cells[2], joined, cells[4], coupleUrl);
         }
 
         return null;

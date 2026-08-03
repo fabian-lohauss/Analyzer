@@ -101,7 +101,7 @@ if (matrix) {
 			: Number(row.dataset[key]);
 
 		const sortValue = (row) => ({
-			overall: dataValue(row, 'overall'),
+			overall: dataValue(row, 'overallSupport'),
 			final: dataValue(row, 'overallF'),
 			preliminary: dataValue(row, 'overallP'),
 			coverage: dataValue(row, 'coverage')
@@ -207,4 +207,5 @@ if (matrix) {
 			judgeButtons.forEach((button) => button.setAttribute('aria-pressed', 'false'));
 			applyFilters();
 		});
+		applyFilters();
 	}

@@ -2,7 +2,17 @@ namespace WdsfAnalyzer.Core;
 
 public sealed record AthleteProfile(Guid AthleteId, string Min, string Name, string Country, string AgeGroup, Uri ProfileUrl);
 
-public sealed record Partnership(string PartnerName, string Country, DateOnly? Joined, string Status);
+public sealed record Partnership(
+    string PartnerName,
+    string Country,
+    DateOnly? Joined,
+    string Status,
+    Uri CoupleUrl,
+    string? ManMin = null,
+    string? LadyMin = null)
+{
+    public string? CacheKey => ManMin is not null && LadyMin is not null ? $"{ManMin}-{LadyMin}" : null;
+}
 
 public sealed record CompetitionEntry(
     string Id,
