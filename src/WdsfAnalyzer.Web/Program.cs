@@ -1,14 +1,27 @@
 using System.Net;
 using WdsfAnalyzer.Core;
+using WdsfAnalyzer.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+builder.Services.AddHealthChecks();
 builder.Services.AddSingleton<WdsfProfileParser>();
 builder.Services.AddSingleton<WdsfResultsParser>();
 builder.Services.AddSingleton<WdsfMarksParser>();
 builder.Services.AddSingleton<WdsfFinalParser>();
 builder.Services.AddSingleton<WdsfScoresParser>();
+builder.Services.AddSingleton<IWdsfPageCache>(services =>
+{
+    var configuration = services.GetRequiredService<IConfiguration>();
+    if (Uri.TryCreate(configuration["Storage:ServiceUri"], UriKind.Absolute, out var serviceUri))
+    {
+        return new BlobWdsfPageCache(serviceUri, configuration["Storage:ContainerName"] ?? "cache");
+    }
+
+    var environment = services.GetRequiredService<IWebHostEnvironment>();
+    return new FileWdsfPageCache(Path.Combine(environment.ContentRootPath, "App_Data", "cache"));
+});
 builder.Services.AddSingleton<IWdsfAnalysisSource>(services =>
 {
     var handler = new HttpClientHandler
@@ -18,7 +31,6 @@ builder.Services.AddSingleton<IWdsfAnalysisSource>(services =>
     };
     var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(30) };
     client.DefaultRequestHeaders.UserAgent.ParseAdd("WdsfJudgeDeviationAnalyzer/0.1 (+local analytical tool)");
-    var environment = services.GetRequiredService<IWebHostEnvironment>();
     return new WdsfAnalysisSource(
         client,
         services.GetRequiredService<WdsfProfileParser>(),
@@ -26,7 +38,7 @@ builder.Services.AddSingleton<IWdsfAnalysisSource>(services =>
         services.GetRequiredService<WdsfMarksParser>(),
         services.GetRequiredService<WdsfFinalParser>(),
         services.GetRequiredService<WdsfScoresParser>(),
-        Path.Combine(environment.ContentRootPath, "App_Data", "cache"));
+        services.GetRequiredService<IWdsfPageCache>());
 });
 
 var app = builder.Build();
@@ -43,6 +55,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapHealthChecks("/health");
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();

@@ -10,3 +10,4 @@ C:\Repos\Analyzer\src\WdsfAnalyzer.Core\obj\Debug\net10.0\refint\WdsfAnalyzer.Co
 C:\Repos\Analyzer\src\WdsfAnalyzer.Core\obj\Debug\net10.0\WdsfAnalyzer.Core.pdb
 C:\Repos\Analyzer\src\WdsfAnalyzer.Core\obj\Debug\net10.0\ref\WdsfAnalyzer.Core.dll
 C:\Repos\Analyzer\src\WdsfAnalyzer.Core\obj\Debug\net10.0\WdsfAnalyzer.Core.csproj.AssemblyReference.cache
+C:\Repos\Analyzer\src\WdsfAnalyzer.Core\obj\Debug\net10.0\WdsfAnalyzer.Core.sourcelink.json

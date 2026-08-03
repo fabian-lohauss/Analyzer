@@ -99,3 +99,4 @@ C:\Repos\Analyzer\tests\WdsfAnalyzer.Tests\obj\Debug\net10.0\WdsfAnalyzer.Tests.
 C:\Repos\Analyzer\tests\WdsfAnalyzer.Tests\obj\Debug\net10.0\WdsfAnalyzer.Tests.genruntimeconfig.cache
 C:\Repos\Analyzer\tests\WdsfAnalyzer.Tests\obj\Debug\net10.0\ref\WdsfAnalyzer.Tests.dll
 C:\Repos\Analyzer\tests\WdsfAnalyzer.Tests\bin\Debug\net10.0\HtmlAgilityPack.dll
+C:\Repos\Analyzer\tests\WdsfAnalyzer.Tests\obj\Debug\net10.0\WdsfAnalyzer.Tests.sourcelink.json

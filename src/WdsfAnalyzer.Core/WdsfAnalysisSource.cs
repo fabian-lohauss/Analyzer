@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,7 +14,7 @@ public sealed partial class WdsfAnalysisSource(
     WdsfMarksParser marksParser,
     WdsfFinalParser finalParser,
     WdsfScoresParser scoresParser,
-    string cacheDirectory) : IWdsfAnalysisSource
+    IWdsfPageCache pageCache) : IWdsfAnalysisSource
 {
     private static readonly Uri BaseUri = new("https://www.worlddancesport.org");
 
@@ -340,16 +339,13 @@ public sealed partial class WdsfAnalysisSource(
 
     private async Task<string> GetCachedPageAsync(Uri url, bool refresh, CancellationToken cancellationToken)
     {
-        Directory.CreateDirectory(cacheDirectory);
-        var key = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(url.AbsoluteUri)));
-        var path = Path.Combine(cacheDirectory, $"{key}.html");
-        if (!refresh && File.Exists(path))
+        if (!refresh && await pageCache.GetAsync(url, cancellationToken) is { } cached)
         {
-            return await File.ReadAllTextAsync(path, cancellationToken);
+            return cached;
         }
 
         var html = await httpClient.GetStringAsync(url, cancellationToken);
-        await File.WriteAllTextAsync(path, html, cancellationToken);
+        await pageCache.SetAsync(url, html, cancellationToken);
         return html;
     }
 
