@@ -40,6 +40,10 @@ jobs:
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Reset interrupted slot swap
+        continue-on-error: true
+        run: az webapp deployment slot swap --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --name "${{ vars.AZURE_APP_NAME }}" --slot staging --target-slot production --action reset
+
       - name: Provision Azure resources
         uses: azure/arm-deploy@v2
         with:
