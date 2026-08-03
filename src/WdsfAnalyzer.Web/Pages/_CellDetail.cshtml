@@ -1,0 +1,85 @@
+@model WdsfAnalyzer.Web.Pages.CellDetailViewModel
+@{
+    static string DetailNumber(decimal value) =>
+        value.ToString(value == decimal.Truncate(value) ? "0" : "0.0");
+
+    static string PreliminaryMark(decimal value) => value > 0 ? "+" : "-";
+
+    static int RoundOrder(string round)
+    {
+        if (round.Equals("Final", StringComparison.OrdinalIgnoreCase)) return int.MaxValue;
+        var digits = new string(round.Where(char.IsDigit).ToArray());
+        return int.TryParse(digits, out var number) ? number : 0;
+    }
+
+    var finalDetails = Model.Value.Details
+        .Where(detail => detail.Kind == WdsfAnalyzer.Core.JudgeValueKind.RelativeFinal)
+        .ToList();
+    var preliminaryRounds = Model.Value.Details
+        .Where(detail => detail.Kind == WdsfAnalyzer.Core.JudgeValueKind.Preliminary)
+        .GroupBy(detail => detail.Round)
+        .OrderByDescending(round => RoundOrder(round.Key))
+        .ToList();
+    var canonicalDances = Model.Competition.Discipline.Contains("Latin", StringComparison.OrdinalIgnoreCase)
+        ? new[] { "Samba", "Cha Cha Cha", "Rumba", "Paso Doble", "Jive" }
+        : new[] { "Waltz", "Tango", "Viennese Waltz", "Slow Foxtrot", "Quickstep" };
+    var publishedDances = finalDetails.Select(detail => detail.Dance!)
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .ToList();
+    var dances = publishedDances.Count == 0
+        ? canonicalDances.ToList()
+        : canonicalDances.Where(dance => publishedDances.Contains(dance, StringComparer.OrdinalIgnoreCase))
+            .Concat(publishedDances.Where(dance => !canonicalDances.Contains(dance, StringComparer.OrdinalIgnoreCase)))
+            .ToList();
+}
+
+<div class="cell-detail-content">
+    <p class="eyebrow">@Model.Competition.Location · @Model.Competition.Date.ToString("MMM yy")@if (finalDetails.Count > 0 && Model.Competition.Placement.HasValue) { <text> · Final place @Model.Competition.Placement</text> }</p>
+    <h3>@Model.JudgeName</h3>
+    <p class="detail-notation">Final: achieved place in header · <strong>adjudicator rank</strong> in row · Preliminary: panel marks <strong>+ / -</strong></p>
+    <div class="detail-table-shell">
+        <table class="round-detail-table">
+            <thead><tr><th>Round</th>@foreach (var dance in dances)
+            {
+                var finalDetail = finalDetails.FirstOrDefault(item => item.Dance!.Equals(dance, StringComparison.OrdinalIgnoreCase));
+                <th>@dance@if (finalDetail is not null) { <small aria-label="Achieved place @DetailNumber(finalDetail.ReferenceValue)">@DetailNumber(finalDetail.ReferenceValue)</small> }</th>
+            }</tr></thead>
+            <tbody>
+            @if (finalDetails.Count > 0)
+            {
+                <tr>
+                    <th scope="row" class="final-row-label">Final <span class="final-judge-name">(@Model.JudgeName)</span></th>
+                    @foreach (var dance in dances)
+                    {
+                        var detail = finalDetails.FirstOrDefault(item => item.Dance!.Equals(dance, StringComparison.OrdinalIgnoreCase));
+                        if (detail is null) { <td class="missing">—</td> }
+                        else { <td><strong>@DetailNumber(detail.JudgeValue)</strong></td> }
+                    }
+                </tr>
+            }
+            @foreach (var round in preliminaryRounds)
+            {
+                var roundDetails = round.ToList();
+                var includedInScore = roundDetails.Any(detail => detail.IncludedInScore);
+                <tr class="@(includedInScore ? "included-round" : null)">
+                    <th scope="row">@round.Key@if (includedInScore) { <small>Used for P</small> }</th>
+                    @if (roundDetails.All(detail => detail.Dance is null))
+                    {
+                        var detail = roundDetails[0];
+                        <td colspan="@dances.Count" class="all-dances"><span>All dances</span>@DetailNumber(detail.ReferenceValue) <strong>(@DetailNumber(detail.JudgeValue))</strong></td>
+                    }
+                    else
+                    {
+                        @foreach (var dance in dances)
+                        {
+                            var detail = roundDetails.FirstOrDefault(item => item.Dance?.Equals(dance, StringComparison.OrdinalIgnoreCase) == true);
+                            if (detail is null) { <td class="missing">/</td> }
+                            else { <td>@DetailNumber(detail.ReferenceValue) <strong>@PreliminaryMark(detail.JudgeValue)</strong></td> }
+                        }
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

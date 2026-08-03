@@ -1,26 +1,13 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Judge analysis";
-
-    static string DetailNumber(decimal value) =>
-        value.ToString(value == decimal.Truncate(value) ? "0" : "0.0");
-
-    static string PreliminaryMark(decimal value) => value > 0 ? "+" : "-";
-
-    static int RoundOrder(string round)
-    {
-        if (round.Equals("Final", StringComparison.OrdinalIgnoreCase)) return int.MaxValue;
-        var digits = new string(round.Where(char.IsDigit).ToArray());
-        return int.TryParse(digits, out var number) ? number : 0;
-    }
+    ViewData["Title"] = "Competition analysis";
 }
 
-<section class="query-band">
-    <div>
+<section class="query-toolbar">
+    <div class="query-title">
         <p class="eyebrow">WDSF official results</p>
-        <h1>Judge deviation analyzer</h1>
-        <p class="lede">Inspect a couple's competition record before comparing adjudicator marks across rounds and dances.</p>
+        <h1>Competition analysis</h1>
     </div>
     <form method="post" class="min-form" data-analysis-form>
         <div class="input-row">
@@ -41,9 +28,7 @@
 @if (Model.Analysis is null)
 {
     <section class="empty-state">
-        <p class="empty-index">01</p>
-        <h2>Start with either partner</h2>
-        <p>The current partnership and completed WDSF competitions from the selected month onward will be resolved automatically.</p>
+        <p>Enter either partner's MIN to analyze completed competitions from the selected month onward.</p>
     </section>
 }
 else
@@ -56,9 +41,8 @@ else
         .ToList();
     <section class="identity-strip">
         <div>
-            <p class="eyebrow">Current partnership</p>
             <h2>@analysis.Athlete.Name <span>+</span> @(analysis.Partnership?.PartnerName ?? "Partner unavailable")</h2>
-            <p>@analysis.Athlete.Country · @analysis.Athlete.AgeGroup · MIN @analysis.Athlete.Min</p>
+            <p>@analysis.Competitions.Count completed competitions · since @analysis.CoverageStart.ToString("MMM yyyy") · @analysis.Athlete.Country · @analysis.Athlete.AgeGroup</p>
         </div>
         <div class="identity-actions">
             <a href="@analysis.Athlete.ProfileUrl" target="_blank" rel="noopener">WDSF profile ↗</a>
@@ -70,25 +54,10 @@ else
         </div>
     </section>
 
-    <section class="metric-grid" aria-label="Analysis summary">
-        <div><span>Included</span><strong>@analysis.Competitions.Count</strong><small>completed competitions</small></div>
-        <div><span>Excluded</span><strong>@analysis.ExcludedCompetitionCount</strong><small>old or non-result entries</small></div>
-        <div><span>Coverage</span><strong>@analysis.CoverageStart.ToString("MMM yyyy")+</strong><small>configured analysis window</small></div>
-        <div><span>Judge marks</span><strong>@judges.Sum(judge => judge.ObservationCount)</strong><small>all mode-aware observations</small></div>
-    </section>
-
     <section class="data-section judge-section">
         <div class="section-heading">
             <div><p class="eyebrow">All supported rounds</p><h2>Judge matrix</h2></div>
-            <div class="matrix-heading-tools">
-                <p>P = preliminary support · F = final support · Δ = final-place deviation</p>
-                <div class="matrix-sort" role="group" aria-label="Sort adjudicators">
-                    <button type="button" data-matrix-sort="overall" aria-pressed="true">Overall</button>
-                    <button type="button" data-matrix-sort="final" aria-pressed="false">Final</button>
-                    <button type="button" data-matrix-sort="preliminary" aria-pressed="false">Preliminary</button>
-                    <button type="button" data-matrix-sort="coverage" aria-pressed="false">Coverage</button>
-                </div>
-            </div>
+            <p>P = preliminary · F = final · Δ = final-place deviation</p>
         </div>
         @if (judges.Count == 0)
         {
@@ -108,7 +77,14 @@ else
             </div>
             <div class="table-shell matrix-shell">
                 <table class="judge-matrix">
-                    <thead><tr><th>Adjudicator</th><th data-summary-heading>Overall support</th><th>Average P</th><th>Average F</th><th>Competitions</th>
+                    <thead><tr><th class="adjudicator-heading">
+                        <button type="button" class="column-sort-button" data-matrix-sort="name" aria-pressed="false">Adjudicator <span aria-hidden="true">↑</span></button>
+                        <input type="search" data-judge-search aria-label="Filter adjudicators by name" placeholder="Filter name" autocomplete="off" />
+                    </th>
+                    <th><button type="button" class="column-sort-button" data-matrix-sort="overall" aria-pressed="true"><span data-summary-heading>Overall</span><span aria-hidden="true">↓</span></button></th>
+                    <th><button type="button" class="column-sort-button" data-matrix-sort="preliminary" aria-pressed="false">Average P <span aria-hidden="true">↓</span></button></th>
+                    <th><button type="button" class="column-sort-button" data-matrix-sort="final" aria-pressed="false">Average F <span aria-hidden="true">↓</span></button></th>
+                    <th><button type="button" class="column-sort-button" data-matrix-sort="coverage" aria-pressed="false">Competitions <span aria-hidden="true">↓</span></button></th>
                     @foreach (var competition in analyzedCompetitions)
                     {
                         var city = competition.Location.Split(',')[0].Trim();
@@ -145,87 +121,22 @@ else
                             <td class="support-index" data-summary-cell data-overall-text="@judge.OverallSupport.ToString("0")% Confidence @((judge.OverallConfidence * 100).ToString("0"))%">@judge.OverallSupport.ToString("0")%<small>Confidence @((judge.OverallConfidence * 100).ToString("0"))%</small></td>
                             <td class="deviation @(eligible && averageP.HasValue ? (averageP > 50 ? "positive" : averageP < 50 ? "negative" : "neutral") : "")">@(averageP.HasValue ? $"P {averageP:0}%" : "—")</td>
                             <td class="deviation @(eligible && averageF.HasValue ? (averageF > 50 ? "positive" : averageF < 50 ? "negative" : "neutral") : "")">@(averageF.HasValue ? $"F {averageF:0}%" : "—")@if (averageFDeviation.HasValue) { <small>Δ @averageFDeviation.Value.ToString("+0.00;-0.00;0.00")</small> }</td>
-                            <td>@judge.CompetitionCount <small>@judge.ObservationCount rounds</small></td>
+                            <td>@judge.CompetitionCount <small>@judge.ObservationCount @(judge.ObservationCount == 1 ? "observation" : "observations")</small></td>
                             @foreach (var competition in analyzedCompetitions)
                             {
                                 if (judge.CompetitionValues.TryGetValue(competition.Id, out var value))
                                 {
                                     var competitionScore = value.FinalSupport ?? value.PreliminarySupport;
                                     var direction = competitionScore - 50;
-                                    var finalDetails = value.Details.Where(detail => detail.Kind == WdsfAnalyzer.Core.JudgeValueKind.RelativeFinal).ToList();
-                                    var preliminaryRounds = value.Details
-                                        .Where(detail => detail.Kind == WdsfAnalyzer.Core.JudgeValueKind.Preliminary)
-                                        .GroupBy(detail => detail.Round)
-                                        .OrderByDescending(round => RoundOrder(round.Key))
-                                        .ToList();
-                                    var canonicalDances = competition.Discipline.Contains("Latin", StringComparison.OrdinalIgnoreCase)
-                                        ? new[] { "Samba", "Cha Cha Cha", "Rumba", "Paso Doble", "Jive" }
-                                        : new[] { "Waltz", "Tango", "Viennese Waltz", "Slow Foxtrot", "Quickstep" };
-                                    var publishedDances = finalDetails.Select(detail => detail.Dance!)
-                                        .Distinct(StringComparer.OrdinalIgnoreCase)
-                                        .ToList();
-                                    var dances = publishedDances.Count == 0
-                                        ? canonicalDances.ToList()
-                                        : canonicalDances.Where(dance => publishedDances.Contains(dance, StringComparer.OrdinalIgnoreCase))
-                                            .Concat(publishedDances.Where(dance => !canonicalDances.Contains(dance, StringComparer.OrdinalIgnoreCase)))
-                                            .ToList();
                                     <td class="deviation @(eligible && competitionScore.HasValue ? (direction > 0 ? "positive" : direction < 0 ? "negative" : "neutral") : "")" data-competition-id="@competition.Id" data-score="@(competitionScore?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")" data-final-support="@(value.FinalSupport?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")" data-preliminary-support="@(value.PreliminarySupport?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")" data-final-deviation="@(value.FinalDeviation?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")">
-                                        <button type="button" class="cell-detail-button" aria-expanded="false" aria-label="Show round details for @judge.Name at @competition.Location">
+                                        <button type="button"
+                                                class="cell-detail-button"
+                                                data-detail-url="@Url.Page("/Index", "CellDetail", new { min = Model.Min, coverageStart = Model.CoverageStart, judgeName = judge.Name, competitionId = competition.Id })"
+                                                aria-expanded="false"
+                                                aria-label="Show round details for @judge.Name at @competition.Location">
                                             <span class="competition-score-line"><span>F @(value.FinalSupport.HasValue ? $"{value.FinalSupport:0}%" : "—")</span>@if (value.FinalDeviation.HasValue) { <small>Δ @value.FinalDeviation.Value.ToString("+0.00;-0.00;0.00")</small> }</span>
                                             <span class="competition-score-line">P @(value.PreliminarySupport.HasValue ? $"{value.PreliminarySupport:0}%" : "—")</span>
                                         </button>
-                                        <template data-cell-detail-template>
-                                            <div class="cell-detail-content">
-                                                <p class="eyebrow">@competition.Location · @competition.Date.ToString("MMM yy")@if (finalDetails.Count > 0 && competition.Placement.HasValue) { <text> · Final place @competition.Placement</text> }</p>
-                                                <h3>@judge.Name</h3>
-                                                <p class="detail-notation">Final: achieved place in header · <strong>adjudicator rank</strong> in row · Preliminary: panel marks <strong>+ / -</strong></p>
-                                                <div class="detail-table-shell">
-                                                    <table class="round-detail-table">
-                                                        <thead><tr><th>Round</th>@foreach (var dance in dances)
-                                                        {
-                                                            var finalDetail = finalDetails.FirstOrDefault(item => item.Dance!.Equals(dance, StringComparison.OrdinalIgnoreCase));
-                                                            <th>@dance@if (finalDetail is not null) { <small aria-label="Achieved place @DetailNumber(finalDetail.ReferenceValue)">@DetailNumber(finalDetail.ReferenceValue)</small> }</th>
-                                                        }</tr></thead>
-                                                        <tbody>
-                                                        @if (finalDetails.Count > 0)
-                                                        {
-                                                            <tr>
-                                                                <th scope="row" class="final-row-label">Final <span class="final-judge-name">(@judge.Name)</span></th>
-                                                                @foreach (var dance in dances)
-                                                                {
-                                                                    var detail = finalDetails.FirstOrDefault(item => item.Dance!.Equals(dance, StringComparison.OrdinalIgnoreCase));
-                                                                    if (detail is null) { <td class="missing">—</td> }
-                                                                    else { <td><strong>@DetailNumber(detail.JudgeValue)</strong></td> }
-                                                                }
-                                                            </tr>
-                                                        }
-                                                        @foreach (var round in preliminaryRounds)
-                                                        {
-                                                            var roundDetails = round.ToList();
-                                                            var includedInScore = roundDetails.Any(detail => detail.IncludedInScore);
-                                                            <tr class="@(includedInScore ? "included-round" : null)">
-                                                                <th scope="row">@round.Key@if (includedInScore) { <small>Used for P</small> }</th>
-                                                                @if (roundDetails.All(detail => detail.Dance is null))
-                                                                {
-                                                                    var detail = roundDetails[0];
-                                                                    <td colspan="@dances.Count" class="all-dances"><span>All dances</span>@DetailNumber(detail.ReferenceValue) <strong>(@DetailNumber(detail.JudgeValue))</strong></td>
-                                                                }
-                                                                else
-                                                                {
-                                                                    @foreach (var dance in dances)
-                                                                    {
-                                                                        var detail = roundDetails.FirstOrDefault(item => item.Dance?.Equals(dance, StringComparison.OrdinalIgnoreCase) == true);
-                                                                        if (detail is null) { <td class="missing">/</td> }
-                                                                        else { <td>@DetailNumber(detail.ReferenceValue) <strong>@PreliminaryMark(detail.JudgeValue)</strong></td> }
-                                                                    }
-                                                                }
-                                                            </tr>
-                                                        }
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </template>
                                     </td>
                                 }
                                 else
@@ -245,14 +156,12 @@ else
         }
     </section>
 
-    <section class="data-section">
-        <div class="section-heading">
-            <div><p class="eyebrow">Imported dataset</p><h2>Competition history</h2></div>
-            <p>Loaded @analysis.LoadedAt.ToLocalTime().ToString("g")</p>
-        </div>
+    <details class="secondary-section">
+        <summary><span>Competition history</span><small>@analysis.Competitions.Count competitions · loaded @analysis.LoadedAt.ToLocalTime().ToString("g")</small></summary>
+        <div class="secondary-section-content">
         @if (analysis.Competitions.Count == 0)
         {
-            <div class="notice">No completed competitions from 2024 onward were found.</div>
+            <div class="notice">No completed competitions from @analysis.CoverageStart.ToString("MMM yyyy") onward were found.</div>
         }
         else
         {
@@ -278,12 +187,13 @@ else
                 </table>
             </div>
         }
-    </section>
+        </div>
+    </details>
 
-    <div class="notice methodology-note">
-        <strong>Methodology status</strong>
-        <span>P is the percentage of available preliminary marks. F normalizes final rank and adds a 50%-weighted adjustment for Δ, the difference from the achieved dance place.</span>
-    </div>
+    <details class="secondary-section methodology-section">
+        <summary><span>Methodology</span><small>How P, F, and Δ are calculated</small></summary>
+        <p>P is the percentage of available preliminary marks. F normalizes final rank and adds a 50%-weighted adjustment for Δ, the difference from the achieved dance place.</p>
+    </details>
 }
 
 <div class="loading-layer" data-loading-layer hidden role="status" aria-live="polite">

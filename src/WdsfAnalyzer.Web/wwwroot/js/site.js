@@ -29,15 +29,18 @@ if (matrix) {
 		const judgeButtons = [...matrix.querySelectorAll('[data-judge-filter]')];
 		const competitionButtons = [...matrix.querySelectorAll('[data-competition-filter]')];
 		const sortButtons = [...document.querySelectorAll('[data-matrix-sort]')];
+		const judgeSearch = matrix.querySelector('[data-judge-search]');
 		const detailButtons = [...matrix.querySelectorAll('.cell-detail-button')];
 		const detailPopover = document.querySelector('[data-cell-detail-popover]');
 		const detailContent = detailPopover?.querySelector('[data-cell-detail-content]');
 		let activeJudgeRow = null;
 		let activeCompetitionId = null;
 		let activeSort = 'overall';
+		let nameSortDirection = 1;
 		let pinnedDetailButton = null;
 		let openDetailButton = null;
 		let detailTimer = null;
+		const detailCache = new Map();
 
 		const positionDetail = (button) => {
 			if (window.matchMedia('(max-width: 800px)').matches) {
@@ -66,15 +69,31 @@ if (matrix) {
 			pinnedDetailButton = null;
 		};
 
-		const showDetail = (button) => {
-			const template = button.parentElement.querySelector('[data-cell-detail-template]');
-			if (!template) return;
+		const showDetail = async (button) => {
 			openDetailButton?.setAttribute('aria-expanded', 'false');
-			detailContent.replaceChildren(template.content.cloneNode(true));
+			detailContent.textContent = 'Loading details…';
 			detailPopover.hidden = false;
 			openDetailButton = button;
 			button.setAttribute('aria-expanded', 'true');
 			positionDetail(button);
+
+			try {
+				const url = button.dataset.detailUrl;
+				if (!detailCache.has(url)) {
+					detailCache.set(url, fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+						.then((response) => {
+							if (!response.ok) throw new Error(`Detail request failed with ${response.status}`);
+							return response.text();
+						}));
+				}
+				const html = await detailCache.get(url);
+				if (openDetailButton !== button) return;
+				detailContent.innerHTML = html;
+				positionDetail(button);
+			} catch {
+				detailCache.delete(button.dataset.detailUrl);
+				if (openDetailButton === button) detailContent.textContent = 'Details could not be loaded.';
+			}
 		};
 
 		const scheduleDetailClose = () => {
@@ -88,11 +107,14 @@ if (matrix) {
 			cell.classList.add(value > 50 ? 'positive' : value < 50 ? 'negative' : 'neutral');
 		};
 
+		const judgeName = (row) => row.querySelector('[data-judge-filter]').dataset.judgeFilter;
 		const sortRows = (valueForRow) => {
 			rows
-				.sort((left, right) => valueForRow(right) - valueForRow(left) ||
-					(activeSort === 'final' ? dataValue(right, 'overallFDeviation') - dataValue(left, 'overallFDeviation') : 0) ||
-					left.querySelector('strong').textContent.localeCompare(right.querySelector('strong').textContent))
+				.sort((left, right) => activeSort === 'name'
+					? nameSortDirection * judgeName(left).localeCompare(judgeName(right))
+					: valueForRow(right) - valueForRow(left) ||
+						(activeSort === 'final' ? dataValue(right, 'overallFDeviation') - dataValue(left, 'overallFDeviation') : 0) ||
+						judgeName(left).localeCompare(judgeName(right)))
 				.forEach((row) => body.appendChild(row));
 		};
 
@@ -120,6 +142,7 @@ if (matrix) {
 		};
 
 		const applyFilters = () => {
+			const nameQuery = judgeSearch.value.trim().toLocaleLowerCase();
 			matrix.querySelectorAll('[data-competition-id]').forEach((cell) => {
 				const hasJudgeValue = !activeJudgeRow || Number.isFinite(competitionScore(competitionCell(activeJudgeRow, cell.dataset.competitionId)));
 				cell.hidden = activeCompetitionId
@@ -130,6 +153,7 @@ if (matrix) {
 			rows.forEach((row) => {
 				const selectedCompetitionCell = activeCompetitionId ? competitionCell(row, activeCompetitionId) : null;
 				row.hidden = (activeJudgeRow && row !== activeJudgeRow) ||
+					(nameQuery && !judgeName(row).toLocaleLowerCase().includes(nameQuery)) ||
 					(activeCompetitionId && !Number.isFinite(competitionScore(selectedCompetitionCell)));
 				const summaryCell = row.querySelector('[data-summary-cell]');
 				const value = activeCompetitionId ? competitionScore(selectedCompetitionCell) : dataValue(row, 'overall');
@@ -168,10 +192,14 @@ if (matrix) {
 		competitionButtons.forEach((button) => button.addEventListener('click', () => selectCompetition(button)));
 		judgeButtons.forEach((button) => button.addEventListener('click', () => selectJudge(button)));
 		sortButtons.forEach((button) => button.addEventListener('click', () => {
+			if (button.dataset.matrixSort === 'name' && activeSort === 'name') nameSortDirection *= -1;
 			activeSort = button.dataset.matrixSort;
 			sortButtons.forEach((candidate) => candidate.setAttribute('aria-pressed', String(candidate === button)));
+			const nameIndicator = button.querySelector('[aria-hidden="true"]');
+			if (nameIndicator && activeSort === 'name') nameIndicator.textContent = nameSortDirection === 1 ? '↑' : '↓';
 			applyFilters();
 		}));
+		judgeSearch.addEventListener('input', applyFilters);
 		detailButtons.forEach((button) => {
 			button.addEventListener('pointerenter', () => {
 				clearTimeout(detailTimer);

@@ -50,6 +50,29 @@ public class IndexModel(IWdsfAnalysisSource analysisSource) : PageModel
         return Page();
     }
 
+    public async Task<IActionResult> OnGetCellDetailAsync(
+        string min,
+        string coverageStart,
+        string judgeName,
+        string competitionId,
+        CancellationToken cancellationToken = default)
+    {
+        if (!TryParseCoverageStart(coverageStart, out var parsedCoverage))
+        {
+            return BadRequest();
+        }
+
+        var analysis = await analysisSource.LoadAsync(min, parsedCoverage, false, cancellationToken);
+        var competition = analysis.Competitions.FirstOrDefault(item => item.Id == competitionId);
+        var judge = analysis.Judges?.FirstOrDefault(item => item.Name.Equals(judgeName, StringComparison.OrdinalIgnoreCase));
+        if (competition is null || judge is null || !judge.CompetitionValues.TryGetValue(competitionId, out var value))
+        {
+            return NotFound();
+        }
+
+        return Partial("_CellDetail", new CellDetailViewModel(judge.Name, competition, value));
+    }
+
     public string MaximumCoverageMonth => DateTime.UtcNow.ToString("yyyy-MM", CultureInfo.InvariantCulture);
 
     private static string DefaultCoverageStart() =>
@@ -57,10 +80,8 @@ public class IndexModel(IWdsfAnalysisSource analysisSource) : PageModel
 
     private bool TryParseCoverageStart(out DateOnly coverageStart)
     {
-        var maximum = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
-        if (DateTime.TryParseExact(CoverageStart, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed) && parsed <= maximum)
+        if (TryParseCoverageStart(CoverageStart, out coverageStart))
         {
-            coverageStart = DateOnly.FromDateTime(parsed);
             return true;
         }
 
@@ -68,4 +89,22 @@ public class IndexModel(IWdsfAnalysisSource analysisSource) : PageModel
         coverageStart = default;
         return false;
     }
+
+    private static bool TryParseCoverageStart(string value, out DateOnly coverageStart)
+    {
+        var maximum = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        if (DateTime.TryParseExact(value, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed) && parsed <= maximum)
+        {
+            coverageStart = DateOnly.FromDateTime(parsed);
+            return true;
+        }
+
+        coverageStart = default;
+        return false;
+    }
 }
+
+public sealed record CellDetailViewModel(
+    string JudgeName,
+    CompetitionEntry Competition,
+    JudgeCompetitionValue Value);

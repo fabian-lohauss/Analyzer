@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WdsfAnalyzer.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd62b51c90f1960b11ec0f074472ff68cc0acb47")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ae4d98e50f39db5ad36370d5343b91815f3ef36")]
 [assembly: System.Reflection.AssemblyProductAttribute("WdsfAnalyzer.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WdsfAnalyzer.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
