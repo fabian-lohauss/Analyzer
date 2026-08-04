@@ -172,6 +172,7 @@ else
                 {
                     var averageP = judge.AveragePreliminarySupport;
                     var averageF = judge.AverageFinalSupport;
+                    var averageFDeviation = judge.AverageRelativeFinalDeviation;
                     var judgeCompetitions = analyzedCompetitions
                         .Where(competition => judge.CompetitionValues.ContainsKey(competition.Id))
                         .ToList();
@@ -189,7 +190,7 @@ else
                         </button>
                         <dl class="mobile-judge-metrics">
                             <div><dt>Preliminary</dt><dd>@(averageP.HasValue ? $"{averageP:0}%" : "—")</dd></div>
-                            <div><dt>Final</dt><dd>@(averageF.HasValue ? $"{averageF:0}%" : "—")</dd></div>
+                            <div><dt>Final</dt><dd>@(averageF.HasValue ? $"{averageF:0}%" : "—")@if (averageFDeviation.HasValue) { <small>Δ @averageFDeviation.Value.ToString("+0.00;-0.00;0.00")</small> }</dd></div>
                             <div><dt>Competitions</dt><dd>@judge.CompetitionCount</dd></div>
                         </dl>
                         <div class="mobile-competition-list" data-mobile-competition-list hidden>
@@ -207,7 +208,7 @@ else
                                     aria-expanded="false"
                                     aria-label="Show round details for @judge.Name at @competition.Location">
                                 <span class="mobile-competition-place"><strong>@competition.Location.Split(',')[0].Trim()</strong><small>@competition.Date.ToString("dd MMM yyyy")</small></span>
-                                <span class="mobile-competition-score"><span>F @(value.FinalSupport.HasValue ? $"{value.FinalSupport:0}%" : "—")</span><span>P @(value.PreliminarySupport.HasValue ? $"{value.PreliminarySupport:0}%" : "—")</span></span>
+                                <span class="mobile-competition-score"><span>F @(value.FinalSupport.HasValue ? $"{value.FinalSupport:0}%" : "—")@if (value.FinalDeviation.HasValue) { <small>Δ @value.FinalDeviation.Value.ToString("+0.00;-0.00;0.00")</small> }</span><span>P @(value.PreliminarySupport.HasValue ? $"{value.PreliminarySupport:0}%" : "—")</span></span>
                                 <span class="mobile-competition-arrow" aria-hidden="true">›</span>
                             </button>
                         }

@@ -1,0 +1,21 @@
+# .NET build outputs
+**/bin/
+**/obj/
+artifacts/
+publish/
+
+# Test and coverage outputs
+TestResults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# IDE and user-specific files
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Runtime-generated application data
+src/WdsfAnalyzer.Web/App_Data/cache/
