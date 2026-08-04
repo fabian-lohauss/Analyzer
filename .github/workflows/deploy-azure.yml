@@ -70,7 +70,7 @@ jobs:
             --parameters appName="${{ vars.AZURE_APP_NAME }}"
 
       - name: Deploy staging slot
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v3.0.8
         with:
           app-name: ${{ vars.AZURE_APP_NAME }}
           slot-name: staging
