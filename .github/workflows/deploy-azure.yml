@@ -42,7 +42,24 @@ jobs:
 
       - name: Reset interrupted slot swap
         continue-on-error: true
-        run: az webapp deployment slot swap --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --name "${{ vars.AZURE_APP_NAME }}" --slot staging --target-slot production --action reset
+        run: |
+          app_id=$(az webapp show \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --name "${{ vars.AZURE_APP_NAME }}" \
+            --query id \
+            --output tsv 2>/dev/null) || true
+
+          if [[ -z "$app_id" ]] || ! az resource show --ids "$app_id/slots/staging" >/dev/null 2>&1; then
+            echo "No existing staging slot; skipping swap reset."
+            exit 0
+          fi
+
+          az webapp deployment slot swap \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --name "${{ vars.AZURE_APP_NAME }}" \
+            --slot staging \
+            --target-slot production \
+            --action reset
 
       - name: Provision Azure resources
         run: |
