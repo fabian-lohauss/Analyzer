@@ -118,7 +118,7 @@ else
                             data-coverage="@judge.CompetitionCount"
                             data-eligible="@eligible.ToString().ToLowerInvariant()">
                             <td><button type="button" class="judge-filter-button" data-judge-filter="@judge.Name" aria-pressed="false"><strong>@judge.Name</strong></button>@if (!eligible) { <small>Limited sample</small> }</td>
-                            <td class="support-index" data-summary-cell data-overall-text="@judge.OverallSupport.ToString("0")% Confidence @((judge.OverallConfidence * 100).ToString("0"))%">@judge.OverallSupport.ToString("0")%<small>Confidence @((judge.OverallConfidence * 100).ToString("0"))%</small></td>
+                            <td class="support-index" data-summary-cell data-overall-text="@judge.OverallSupport.ToString("0")% · confidence @((judge.OverallConfidence * 100).ToString("0"))%"><span>@judge.OverallSupport.ToString("0")%</span><small>confidence @((judge.OverallConfidence * 100).ToString("0"))%</small></td>
                             <td class="deviation @(eligible && averageP.HasValue ? (averageP > 50 ? "positive" : averageP < 50 ? "negative" : "neutral") : "")">@(averageP.HasValue ? $"P {averageP:0}%" : "—")</td>
                             <td class="deviation @(eligible && averageF.HasValue ? (averageF > 50 ? "positive" : averageF < 50 ? "negative" : "neutral") : "")">@(averageF.HasValue ? $"F {averageF:0}%" : "—")@if (averageFDeviation.HasValue) { <small>Δ @averageFDeviation.Value.ToString("+0.00;-0.00;0.00")</small> }</td>
                             <td>@judge.CompetitionCount <small>@judge.ObservationCount @(judge.ObservationCount == 1 ? "observation" : "observations")</small></td>
@@ -149,7 +149,74 @@ else
                     </tbody>
                 </table>
             </div>
-            <div class="cell-detail-popover" data-cell-detail-popover role="dialog" aria-label="Adjudicator round details" hidden>
+            <div class="mobile-matrix" data-mobile-matrix>
+                <div class="mobile-matrix-controls">
+                    <label>
+                        Find adjudicator
+                        <input type="search" data-mobile-judge-search placeholder="Filter name" autocomplete="off" />
+                    </label>
+                    <label>
+                        Sort by
+                        <select data-mobile-matrix-sort>
+                            <option value="overall">Overall support</option>
+                            <option value="final">Final</option>
+                            <option value="preliminary">Preliminary</option>
+                            <option value="coverage">Competitions</option>
+                            <option value="name">Adjudicator</option>
+                        </select>
+                    </label>
+                </div>
+                <p class="mobile-matrix-empty" data-mobile-matrix-empty hidden>No adjudicators match this name.</p>
+                <div class="mobile-judge-list" data-mobile-judge-list>
+                @foreach (var judge in judges)
+                {
+                    var averageP = judge.AveragePreliminarySupport;
+                    var averageF = judge.AverageFinalSupport;
+                    var judgeCompetitions = analyzedCompetitions
+                        .Where(competition => judge.CompetitionValues.ContainsKey(competition.Id))
+                        .ToList();
+                    <article class="mobile-judge-card"
+                             data-mobile-judge-card
+                             data-name="@judge.Name"
+                             data-overall="@judge.OverallSupport.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                             data-final="@(averageF?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")"
+                             data-preliminary="@(averageP?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")"
+                             data-coverage="@judge.CompetitionCount">
+                        <button type="button" class="mobile-judge-toggle" data-mobile-judge-toggle aria-expanded="false">
+                            <span class="mobile-judge-name"><strong>@judge.Name</strong>@if (judge.CompetitionCount < 3) { <small>Limited sample</small> }</span>
+                            <span class="mobile-judge-overall"><strong>@judge.OverallSupport.ToString("0")%</strong><small>confidence @((judge.OverallConfidence * 100).ToString("0"))%</small></span>
+                            <span class="mobile-judge-chevron" aria-hidden="true">+</span>
+                        </button>
+                        <dl class="mobile-judge-metrics">
+                            <div><dt>Preliminary</dt><dd>@(averageP.HasValue ? $"{averageP:0}%" : "—")</dd></div>
+                            <div><dt>Final</dt><dd>@(averageF.HasValue ? $"{averageF:0}%" : "—")</dd></div>
+                            <div><dt>Competitions</dt><dd>@judge.CompetitionCount</dd></div>
+                        </dl>
+                        <div class="mobile-competition-list" data-mobile-competition-list hidden>
+                        @foreach (var competition in judgeCompetitions)
+                        {
+                            var value = judge.CompetitionValues[competition.Id];
+                            var competitionScore = value.FinalSupport ?? value.PreliminarySupport;
+                            var direction = competitionScore - 50;
+                            var directionClass = judge.CompetitionCount >= 3 && competitionScore.HasValue
+                                ? direction > 0 ? "positive" : direction < 0 ? "negative" : "neutral"
+                                : "";
+                            <button type="button"
+                                    class="mobile-competition-button cell-detail-button @directionClass"
+                                    data-detail-url="@Url.Page("/Index", "CellDetail", new { min = Model.Min, coverageStart = Model.CoverageStart, judgeName = judge.Name, competitionId = competition.Id })"
+                                    aria-expanded="false"
+                                    aria-label="Show round details for @judge.Name at @competition.Location">
+                                <span class="mobile-competition-place"><strong>@competition.Location.Split(',')[0].Trim()</strong><small>@competition.Date.ToString("dd MMM yyyy")</small></span>
+                                <span class="mobile-competition-score"><span>F @(value.FinalSupport.HasValue ? $"{value.FinalSupport:0}%" : "—")</span><span>P @(value.PreliminarySupport.HasValue ? $"{value.PreliminarySupport:0}%" : "—")</span></span>
+                                <span class="mobile-competition-arrow" aria-hidden="true">›</span>
+                            </button>
+                        }
+                        </div>
+                    </article>
+                }
+                </div>
+            </div>
+            <div class="cell-detail-popover" data-cell-detail-popover role="dialog" aria-modal="false" aria-label="Adjudicator round details" hidden>
                 <button type="button" class="cell-detail-close" data-cell-detail-close aria-label="Close details">×</button>
                 <div data-cell-detail-content></div>
             </div>
@@ -172,11 +239,11 @@ else
                     @foreach (var competition in analysis.Competitions)
                     {
                         <tr>
-                            <td><time datetime="@competition.Date.ToString("yyyy-MM-dd")">@competition.Date.ToString("dd MMM yyyy")</time></td>
-                            <td><strong>@competition.Type · @competition.AgeClass</strong><small>@competition.Location</small></td>
-                            <td>@competition.Discipline</td>
-                            <td>@(competition.Placement?.ToString() ?? competition.Status)</td>
-                            <td class="source-links">
+                            <td data-label="Date"><time datetime="@competition.Date.ToString("yyyy-MM-dd")">@competition.Date.ToString("dd MMM yyyy")</time></td>
+                            <td data-label="Competition"><strong>@competition.Type · @competition.AgeClass</strong><small>@competition.Location</small></td>
+                            <td data-label="Discipline">@competition.Discipline</td>
+                            <td data-label="Result">@(competition.Placement?.ToString() ?? competition.Status)</td>
+                            <td class="source-links" data-label="Sources">
                                 <a href="@competition.RankingUrl" target="_blank" rel="noopener">Ranking</a>
                                 <a href="@competition.ResultsUrl" target="_blank" rel="noopener">Marks</a>
                                 <a href="@competition.FinalUrl" target="_blank" rel="noopener">Final</a>

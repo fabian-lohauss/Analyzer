@@ -30,9 +30,10 @@ if (matrix) {
 		const competitionButtons = [...matrix.querySelectorAll('[data-competition-filter]')];
 		const sortButtons = [...document.querySelectorAll('[data-matrix-sort]')];
 		const judgeSearch = matrix.querySelector('[data-judge-search]');
-		const detailButtons = [...matrix.querySelectorAll('.cell-detail-button')];
+		const detailButtons = [...document.querySelectorAll('.cell-detail-button')];
 		const detailPopover = document.querySelector('[data-cell-detail-popover]');
 		const detailContent = detailPopover?.querySelector('[data-cell-detail-content]');
+		const detailCloseButton = detailPopover?.querySelector('[data-cell-detail-close]');
 		let activeJudgeRow = null;
 		let activeCompetitionId = null;
 		let activeSort = 'overall';
@@ -60,22 +61,30 @@ if (matrix) {
 			detailPopover.style.top = `${top}px`;
 		};
 
-		const closeDetail = () => {
+		const closeDetail = (restoreFocus = false) => {
 			clearTimeout(detailTimer);
+			const buttonToRestore = pinnedDetailButton ?? openDetailButton;
 			openDetailButton?.setAttribute('aria-expanded', 'false');
 			detailPopover.hidden = true;
+			detailPopover.setAttribute('aria-modal', 'false');
 			detailContent.replaceChildren();
+			document.body.classList.remove('detail-open');
 			openDetailButton = null;
 			pinnedDetailButton = null;
+			if (restoreFocus) buttonToRestore?.focus({ preventScroll: true });
 		};
 
-		const showDetail = async (button) => {
+		const showDetail = async (button, pinned = false) => {
 			openDetailButton?.setAttribute('aria-expanded', 'false');
 			detailContent.textContent = 'Loading details…';
 			detailPopover.hidden = false;
 			openDetailButton = button;
+			pinnedDetailButton = pinned ? button : null;
 			button.setAttribute('aria-expanded', 'true');
+			detailPopover.setAttribute('aria-modal', String(pinned));
+			document.body.classList.toggle('detail-open', pinned);
 			positionDetail(button);
+			if (pinned) detailCloseButton.focus({ preventScroll: true });
 
 			try {
 				const url = button.dataset.detailUrl;
@@ -157,9 +166,15 @@ if (matrix) {
 					(activeCompetitionId && !Number.isFinite(competitionScore(selectedCompetitionCell)));
 				const summaryCell = row.querySelector('[data-summary-cell]');
 				const value = activeCompetitionId ? competitionScore(selectedCompetitionCell) : dataValue(row, 'overall');
-				summaryCell.textContent = activeCompetitionId
-					? selectedCompetitionCell?.querySelector('.cell-detail-button')?.textContent
-					: summaryCell.dataset.overallText;
+				if (activeCompetitionId) {
+					summaryCell.textContent = selectedCompetitionCell?.querySelector('.cell-detail-button')?.textContent;
+				} else {
+					const support = document.createElement('span');
+					const confidence = document.createElement('small');
+					support.textContent = `${Math.round(dataValue(row, 'overallSupport'))}%`;
+					confidence.textContent = `confidence ${Math.round(dataValue(row, 'overallConfidence') * 100)}%`;
+					summaryCell.replaceChildren(support, confidence);
+				}
 				if (activeCompetitionId) setScoreClass(summaryCell, value, row.dataset.eligible === 'true' && Number.isFinite(value));
 				else summaryCell.classList.remove('positive', 'negative', 'neutral');
 			});
@@ -200,30 +215,31 @@ if (matrix) {
 			applyFilters();
 		}));
 		judgeSearch.addEventListener('input', applyFilters);
+		const hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 		detailButtons.forEach((button) => {
-			button.addEventListener('pointerenter', () => {
-				clearTimeout(detailTimer);
-				if (!pinnedDetailButton) detailTimer = setTimeout(() => showDetail(button), 180);
-			});
-			button.addEventListener('pointerleave', scheduleDetailClose);
-			button.addEventListener('focus', () => { if (!pinnedDetailButton) showDetail(button); });
+			if (hoverCapable) {
+				button.addEventListener('pointerenter', () => {
+					clearTimeout(detailTimer);
+					if (!pinnedDetailButton) detailTimer = setTimeout(() => showDetail(button), 180);
+				});
+				button.addEventListener('pointerleave', scheduleDetailClose);
+			}
 			button.addEventListener('blur', scheduleDetailClose);
 			button.addEventListener('click', () => {
 				if (pinnedDetailButton === button) {
-					closeDetail();
+					closeDetail(true);
 					return;
 				}
-				pinnedDetailButton = button;
-				showDetail(button);
+				showDetail(button, true);
 			});
 		});
 		detailPopover?.addEventListener('pointerenter', () => clearTimeout(detailTimer));
 		detailPopover?.addEventListener('pointerleave', scheduleDetailClose);
-		detailPopover?.querySelector('[data-cell-detail-close]')?.addEventListener('click', closeDetail);
+		detailCloseButton?.addEventListener('click', () => closeDetail(true));
 		document.addEventListener('pointerdown', (event) => {
-			if (pinnedDetailButton && !detailPopover.contains(event.target) && !pinnedDetailButton.contains(event.target)) closeDetail();
+			if (pinnedDetailButton && !detailPopover.contains(event.target) && !pinnedDetailButton.contains(event.target)) closeDetail(true);
 		});
-		document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && openDetailButton) closeDetail(); });
+		document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && openDetailButton) closeDetail(true); });
 		window.addEventListener('resize', () => { if (openDetailButton) positionDetail(openDetailButton); });
 		filterBar?.querySelector('[data-competition-filter-clear]')?.addEventListener('click', () => {
 			activeCompetitionId = null;
@@ -235,5 +251,43 @@ if (matrix) {
 			judgeButtons.forEach((button) => button.setAttribute('aria-pressed', 'false'));
 			applyFilters();
 		});
+
+		const mobileMatrix = document.querySelector('[data-mobile-matrix]');
+		if (mobileMatrix) {
+			const cards = [...mobileMatrix.querySelectorAll('[data-mobile-judge-card]')];
+			const list = mobileMatrix.querySelector('[data-mobile-judge-list]');
+			const search = mobileMatrix.querySelector('[data-mobile-judge-search]');
+			const sort = mobileMatrix.querySelector('[data-mobile-matrix-sort]');
+			const empty = mobileMatrix.querySelector('[data-mobile-matrix-empty]');
+			const numberValue = (card, key) => card.dataset[key] === ''
+				? Number.NEGATIVE_INFINITY
+				: Number(card.dataset[key]);
+			const updateCards = () => {
+				const query = search.value.trim().toLocaleLowerCase();
+				cards
+					.sort((left, right) => sort.value === 'name'
+						? left.dataset.name.localeCompare(right.dataset.name)
+						: numberValue(right, sort.value) - numberValue(left, sort.value) ||
+							left.dataset.name.localeCompare(right.dataset.name))
+					.forEach((card) => {
+						card.hidden = query !== '' && !card.dataset.name.toLocaleLowerCase().includes(query);
+						list.appendChild(card);
+					});
+				empty.hidden = cards.some((card) => !card.hidden);
+			};
+
+			cards.forEach((card) => {
+				const toggle = card.querySelector('[data-mobile-judge-toggle]');
+				const competitions = card.querySelector('[data-mobile-competition-list]');
+				toggle.addEventListener('click', () => {
+					const expanded = toggle.getAttribute('aria-expanded') === 'true';
+					toggle.setAttribute('aria-expanded', String(!expanded));
+					competitions.hidden = expanded;
+				});
+			});
+			search.addEventListener('input', updateCards);
+			sort.addEventListener('change', updateCards);
+			updateCards();
+		}
 		applyFilters();
 	}
