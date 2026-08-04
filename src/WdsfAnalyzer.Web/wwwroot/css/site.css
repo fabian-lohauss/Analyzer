@@ -134,6 +134,7 @@ button[aria-disabled="true"] { cursor:wait; opacity:.65; }
   .matrix-shell,.matrix-filter { display:none; }
   .mobile-matrix { display:block; border-top:1px solid var(--ink); }
   .mobile-matrix-controls { position:sticky; top:0; z-index:4; display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr); gap:10px; padding:12px 0; border-bottom:1px solid var(--ink); background:var(--paper); }
+  .mobile-competition-control { grid-column:1 / -1; }
   .mobile-matrix-controls label { display:grid; gap:6px; color:#626662; font:500 10px 'DM Mono',monospace; text-transform:uppercase; }
   .mobile-matrix-controls input,.mobile-matrix-controls select { width:100%; min-width:0; height:44px; padding:0 10px; border:1px solid var(--ink); border-radius:0; color:var(--ink); background:var(--white); font:14px 'Manrope',sans-serif; }
   .mobile-matrix-empty { margin:0; padding:24px 0; color:#626662; }

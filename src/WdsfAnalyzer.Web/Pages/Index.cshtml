@@ -151,6 +151,17 @@ else
             </div>
             <div class="mobile-matrix" data-mobile-matrix>
                 <div class="mobile-matrix-controls">
+                    <label class="mobile-competition-control">
+                        Competition
+                        <select data-mobile-competition-filter>
+                            <option value="">All competitions</option>
+                            @foreach (var competition in analyzedCompetitions)
+                            {
+                                var city = competition.Location.Split(',')[0].Trim();
+                                <option value="@competition.Id">@city · @competition.Date.ToString("MMM yy") — @competition.Type @competition.AgeClass @competition.Discipline · #@competition.Id</option>
+                            }
+                        </select>
+                    </label>
                     <label>
                         Find adjudicator
                         <input type="search" data-mobile-judge-search placeholder="Filter name" autocomplete="off" />
@@ -159,6 +170,7 @@ else
                         Sort by
                         <select data-mobile-matrix-sort>
                             <option value="overall">Overall support</option>
+                            <option value="competition" hidden>Competition value</option>
                             <option value="final">Final</option>
                             <option value="preliminary">Preliminary</option>
                             <option value="coverage">Competitions</option>
@@ -204,6 +216,10 @@ else
                                 : "";
                             <button type="button"
                                     class="mobile-competition-button cell-detail-button @directionClass"
+                                    data-mobile-competition-id="@competition.Id"
+                                    data-score="@(competitionScore?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")"
+                                    data-score-label="@(value.FinalSupport.HasValue ? $"F {value.FinalSupport:0}%" : value.PreliminarySupport.HasValue ? $"P {value.PreliminarySupport:0}%" : "—")"
+                                    data-score-detail="@(value.FinalDeviation.HasValue ? $"Δ {value.FinalDeviation.Value:+0.00;-0.00;0.00}" : competition.Date.ToString("dd MMM yyyy"))"
                                     data-detail-url="@Url.Page("/Index", "CellDetail", new { min = Model.Min, coverageStart = Model.CoverageStart, judgeName = judge.Name, competitionId = competition.Id })"
                                     aria-expanded="false"
                                     aria-label="Show round details for @judge.Name at @competition.Location">

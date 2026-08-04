@@ -258,21 +258,53 @@ if (matrix) {
 			const list = mobileMatrix.querySelector('[data-mobile-judge-list]');
 			const search = mobileMatrix.querySelector('[data-mobile-judge-search]');
 			const sort = mobileMatrix.querySelector('[data-mobile-matrix-sort]');
+			const competitionFilter = mobileMatrix.querySelector('[data-mobile-competition-filter]');
+			const competitionSortOption = sort.querySelector('option[value="competition"]');
 			const empty = mobileMatrix.querySelector('[data-mobile-matrix-empty]');
+			const originalSort = { value: sort.value };
+			const originalSummaries = new Map(cards.map((card) => [card, card.querySelector('.mobile-judge-overall').innerHTML]));
 			const numberValue = (card, key) => card.dataset[key] === ''
 				? Number.NEGATIVE_INFINITY
 				: Number(card.dataset[key]);
+			const competitionButton = (card, competitionId) => [...card.querySelectorAll('[data-mobile-competition-id]')]
+				.find((button) => button.dataset.mobileCompetitionId === competitionId);
+			const competitionValue = (card, competitionId) => {
+				const value = competitionButton(card, competitionId)?.dataset.score;
+				return value ? Number(value) : Number.NEGATIVE_INFINITY;
+			};
 			const updateCards = () => {
 				const query = search.value.trim().toLocaleLowerCase();
+				const competitionId = competitionFilter.value;
 				cards
 					.sort((left, right) => sort.value === 'name'
 						? left.dataset.name.localeCompare(right.dataset.name)
+						: sort.value === 'competition'
+							? competitionValue(right, competitionId) - competitionValue(left, competitionId) ||
+								left.dataset.name.localeCompare(right.dataset.name)
 						: numberValue(right, sort.value) - numberValue(left, sort.value) ||
 							left.dataset.name.localeCompare(right.dataset.name))
 					.forEach((card) => {
-						card.hidden = query !== '' && !card.dataset.name.toLocaleLowerCase().includes(query);
+						const selectedCompetition = competitionId ? competitionButton(card, competitionId) : null;
+						card.hidden = (query !== '' && !card.dataset.name.toLocaleLowerCase().includes(query)) ||
+							(competitionId !== '' && !selectedCompetition);
+						card.querySelectorAll('[data-mobile-competition-id]').forEach((button) => {
+							button.hidden = competitionId !== '' && button !== selectedCompetition;
+						});
+						const summary = card.querySelector('.mobile-judge-overall');
+						if (selectedCompetition) {
+							const score = document.createElement('strong');
+							const detail = document.createElement('small');
+							score.textContent = selectedCompetition.dataset.scoreLabel;
+							detail.textContent = selectedCompetition.dataset.scoreDetail;
+							summary.replaceChildren(score, detail);
+						} else {
+							summary.innerHTML = originalSummaries.get(card);
+						}
 						list.appendChild(card);
 					});
+				empty.textContent = competitionId
+					? 'No adjudicators match this competition and name.'
+					: 'No adjudicators match this name.';
 				empty.hidden = cards.some((card) => !card.hidden);
 			};
 
@@ -287,6 +319,17 @@ if (matrix) {
 			});
 			search.addEventListener('input', updateCards);
 			sort.addEventListener('change', updateCards);
+			competitionFilter.addEventListener('change', () => {
+				if (competitionFilter.value) {
+					if (sort.value !== 'competition') originalSort.value = sort.value;
+					competitionSortOption.hidden = false;
+					sort.value = 'competition';
+				} else {
+					competitionSortOption.hidden = true;
+					sort.value = originalSort.value;
+				}
+				updateCards();
+			});
 			updateCards();
 		}
 		applyFilters();
