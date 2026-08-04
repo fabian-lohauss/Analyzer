@@ -1,6 +1,7 @@
 targetScope = 'resourceGroup'
 
 @description('Globally unique Azure App Service name.')
+@minLength(3)
 param appName string
 
 param location string = resourceGroup().location
@@ -11,7 +12,7 @@ param location string = resourceGroup().location
 ])
 param appServiceSku string = 'S1'
 
-var storageName = take(toLower(replace('${appName}${uniqueString(resourceGroup().id)}', '-', '')), 24)
+var storageName = 'wdsf${take(toLower(replace('${appName}${uniqueString(resourceGroup().id)}', '-', '')), 20)}'
 var blobContributorRoleId = subscriptionResourceId(
   'Microsoft.Authorization/roleDefinitions',
   'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
@@ -116,22 +117,18 @@ resource staging 'Microsoft.Web/sites/slots@2024-11-01' = if (appServiceSku != '
   }
 }
 
-resource appBlobAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storage.id, app.id, blobContributorRoleId)
-  scope: storage
-  properties: {
+module appBlobAccess './blob-role-assignment.bicep' = {
+  params: {
+    storageName: storage.name
     principalId: app.identity.principalId
-    principalType: 'ServicePrincipal'
     roleDefinitionId: blobContributorRoleId
   }
 }
 
-resource stagingBlobAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (appServiceSku != 'B1') {
-  name: guid(storage.id, staging.id, blobContributorRoleId)
-  scope: storage
-  properties: {
-    principalId: staging.identity.principalId
-    principalType: 'ServicePrincipal'
+module stagingBlobAccess './blob-role-assignment.bicep' = if (appServiceSku != 'B1') {
+  params: {
+    storageName: storage.name
+    principalId: staging!.identity.principalId
     roleDefinitionId: blobContributorRoleId
   }
 }
