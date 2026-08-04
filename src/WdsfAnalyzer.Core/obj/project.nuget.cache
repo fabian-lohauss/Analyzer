@@ -1,10 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "4vh7l0h4t2w=",
-  "success": true,
-  "projectFilePath": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\fabia\\.nuget\\packages\\htmlagilitypack\\1.12.4\\htmlagilitypack.1.12.4.nupkg.sha512"
-  ],
-  "logs": []
+  "dgSpecHash": "8CUp7/nT5jI=",
+  "success": false,
+  "projectFilePath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "The local source 'C:\\Repos\\OrchestrationFactory2020\\PowerShellRepository\\' doesn't exist.",
+      "projectPath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
+      "filePath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

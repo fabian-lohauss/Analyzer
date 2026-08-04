@@ -1,26 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj": {}
+    "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj": {}
   },
   "projects": {
-    "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj": {
+    "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
+        "projectUniqueName": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
         "projectName": "WdsfAnalyzer.Core",
-        "projectPath": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
-        "packagesPath": "C:\\Users\\fabia\\.nuget\\packages\\",
-        "outputPath": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\obj\\",
+        "projectPath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj",
+        "packagesPath": "C:\\Users\\fabianl\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\fabia\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\fabianl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "file:///C:/Repos/OrchestrationFactory2020/PowerShellRepository/": {},
+          "https://packagefeedproxy.microsoft.io/nuget/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {

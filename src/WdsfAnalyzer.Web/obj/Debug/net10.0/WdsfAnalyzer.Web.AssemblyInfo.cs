@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WdsfAnalyzer.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac87263722f96668c0e8868dfbd85d946289923f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5903254faf16edf2426c80b8fa69ab946260e32")]
 [assembly: System.Reflection.AssemblyProductAttribute("WdsfAnalyzer.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WdsfAnalyzer.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

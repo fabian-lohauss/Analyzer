@@ -1,604 +1,51 @@
 {
   "version": 4,
   "targets": {
-    "net10.0": {
-      "Azure.Core/1.49.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
-          "System.ClientModel": "1.7.0",
-          "System.Memory.Data": "8.0.1"
-        },
-        "compile": {
-          "lib/net8.0/Azure.Core.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Azure.Core.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Azure.Identity/1.17.0": {
-        "type": "package",
-        "dependencies": {
-          "Azure.Core": "1.49.0",
-          "Microsoft.Identity.Client": "4.76.0",
-          "Microsoft.Identity.Client.Extensions.Msal": "4.76.0"
-        },
-        "compile": {
-          "lib/net8.0/Azure.Identity.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Azure.Identity.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Azure.Storage.Blobs/12.26.0": {
-        "type": "package",
-        "dependencies": {
-          "Azure.Core": "1.47.3",
-          "Azure.Storage.Common": "12.25.0"
-        },
-        "compile": {
-          "lib/net8.0/Azure.Storage.Blobs.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Azure.Storage.Blobs.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Azure.Storage.Common/12.25.0": {
-        "type": "package",
-        "dependencies": {
-          "Azure.Core": "1.47.3",
-          "System.IO.Hashing": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/Azure.Storage.Common.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Azure.Storage.Common.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "HtmlAgilityPack/1.12.4": {
-        "type": "package",
-        "compile": {
-          "lib/net7.0/HtmlAgilityPack.dll": {
-            "related": ".deps.json;.pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net7.0/HtmlAgilityPack.dll": {
-            "related": ".deps.json;.pdb;.xml"
-          }
-        }
-      },
-      "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.Identity.Client/4.76.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.IdentityModel.Abstractions": "6.35.0"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.Identity.Client.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.Identity.Client.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.Identity.Client.Extensions.Msal/4.76.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Identity.Client": "4.76.0",
-          "System.Security.Cryptography.ProtectedData": "4.5.0"
-        },
-        "compile": {
-          "lib/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.IdentityModel.Abstractions/6.35.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/Microsoft.IdentityModel.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.IdentityModel.Abstractions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.ClientModel/1.7.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Memory.Data": "8.0.1"
-        },
-        "compile": {
-          "lib/net9.0/System.ClientModel.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net9.0/System.ClientModel.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.IO.Hashing/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.IO.Hashing.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.IO.Hashing.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "System.Memory.Data/8.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.Memory.Data.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Memory.Data.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "System.Security.Cryptography.ProtectedData/4.5.0": {
-        "type": "package",
-        "compile": {
-          "ref/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "WdsfAnalyzer.Core/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "dependencies": {
-          "HtmlAgilityPack": "1.12.4"
-        },
-        "compile": {
-          "bin/placeholder/WdsfAnalyzer.Core.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/WdsfAnalyzer.Core.dll": {}
-        }
-      }
-    }
+    "net10.0": {}
   },
-  "libraries": {
-    "Azure.Core/1.49.0": {
-      "sha512": "wmY5VEEVTBJN+8KVB6qSVZYDCMpHs1UXooOijx/NH7OsMtK92NlxhPBpPyh4cR+07R/zyDGvA5+Fss4TpwlO+g==",
-      "type": "package",
-      "path": "azure.core/1.49.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "CHANGELOG.md",
-        "README.md",
-        "azure.core.1.49.0.nupkg.sha512",
-        "azure.core.nuspec",
-        "azureicon.png",
-        "lib/net462/Azure.Core.dll",
-        "lib/net462/Azure.Core.xml",
-        "lib/net472/Azure.Core.dll",
-        "lib/net472/Azure.Core.xml",
-        "lib/net8.0/Azure.Core.dll",
-        "lib/net8.0/Azure.Core.xml",
-        "lib/netstandard2.0/Azure.Core.dll",
-        "lib/netstandard2.0/Azure.Core.xml"
-      ]
-    },
-    "Azure.Identity/1.17.0": {
-      "sha512": "QZiMa1O5lTniWTSDPyPVdBKOS0/M5DWXTfQ2xLOot96yp8Q5A69iScGtzCIxfbg/4bmp/TynibZ2VK1v3qsSNA==",
-      "type": "package",
-      "path": "azure.identity/1.17.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "CHANGELOG.md",
-        "README.md",
-        "azure.identity.1.17.0.nupkg.sha512",
-        "azure.identity.nuspec",
-        "azureicon.png",
-        "lib/net8.0/Azure.Identity.dll",
-        "lib/net8.0/Azure.Identity.xml",
-        "lib/netstandard2.0/Azure.Identity.dll",
-        "lib/netstandard2.0/Azure.Identity.xml"
-      ]
-    },
-    "Azure.Storage.Blobs/12.26.0": {
-      "sha512": "EBRSHmI0eNzdufcIS1Rf7Ez9M8V1Jl7pMV4UWDERDMCv513KtAVsgz2ez2FQP9Qnwg7uEQrP+Uc7vBtumlr7sQ==",
-      "type": "package",
-      "path": "azure.storage.blobs/12.26.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "CHANGELOG.md",
-        "README.md",
-        "azure.storage.blobs.12.26.0.nupkg.sha512",
-        "azure.storage.blobs.nuspec",
-        "azureicon.png",
-        "lib/net8.0/Azure.Storage.Blobs.dll",
-        "lib/net8.0/Azure.Storage.Blobs.xml",
-        "lib/netstandard2.0/Azure.Storage.Blobs.dll",
-        "lib/netstandard2.0/Azure.Storage.Blobs.xml",
-        "lib/netstandard2.1/Azure.Storage.Blobs.dll",
-        "lib/netstandard2.1/Azure.Storage.Blobs.xml"
-      ]
-    },
-    "Azure.Storage.Common/12.25.0": {
-      "sha512": "MHGWp4aLHRo0BdLj25U2qYdYK//Zz21k4bs3SVyNQEmJbBl3qZ8GuOmTSXJ+Zad93HnFXfvD8kyMr0gjA8Ftpw==",
-      "type": "package",
-      "path": "azure.storage.common/12.25.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "CHANGELOG.md",
-        "README.md",
-        "azure.storage.common.12.25.0.nupkg.sha512",
-        "azure.storage.common.nuspec",
-        "azureicon.png",
-        "lib/net8.0/Azure.Storage.Common.dll",
-        "lib/net8.0/Azure.Storage.Common.xml",
-        "lib/netstandard2.0/Azure.Storage.Common.dll",
-        "lib/netstandard2.0/Azure.Storage.Common.xml"
-      ]
-    },
-    "HtmlAgilityPack/1.12.4": {
-      "sha512": "ljqvBabvFwKoLniuoQKO8b5bJfJweKLs4fUNS/V5dsvpo0A8MlJqxxn9XVmP2DaskbUXty6IYaWAi1SArGIMeQ==",
-      "type": "package",
-      "path": "htmlagilitypack/1.12.4",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "htmlagilitypack.1.12.4.nupkg.sha512",
-        "htmlagilitypack.nuspec",
-        "lib/Net35/HtmlAgilityPack.dll",
-        "lib/Net35/HtmlAgilityPack.pdb",
-        "lib/Net35/HtmlAgilityPack.xml",
-        "lib/Net40-client/HtmlAgilityPack.dll",
-        "lib/Net40-client/HtmlAgilityPack.pdb",
-        "lib/Net40-client/HtmlAgilityPack.xml",
-        "lib/Net40/HtmlAgilityPack.XML",
-        "lib/Net40/HtmlAgilityPack.dll",
-        "lib/Net40/HtmlAgilityPack.pdb",
-        "lib/Net45/HtmlAgilityPack.XML",
-        "lib/Net45/HtmlAgilityPack.dll",
-        "lib/Net45/HtmlAgilityPack.pdb",
-        "lib/NetCore45/HtmlAgilityPack.XML",
-        "lib/NetCore45/HtmlAgilityPack.dll",
-        "lib/NetCore45/HtmlAgilityPack.pdb",
-        "lib/net7.0/HtmlAgilityPack.deps.json",
-        "lib/net7.0/HtmlAgilityPack.dll",
-        "lib/net7.0/HtmlAgilityPack.pdb",
-        "lib/net7.0/HtmlAgilityPack.xml",
-        "lib/netstandard2.0/HtmlAgilityPack.deps.json",
-        "lib/netstandard2.0/HtmlAgilityPack.dll",
-        "lib/netstandard2.0/HtmlAgilityPack.pdb",
-        "lib/netstandard2.0/HtmlAgilityPack.xml",
-        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.XML",
-        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
-        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
-        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.XML",
-        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
-        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
-        "lib/uap10.0/HtmlAgilityPack.XML",
-        "lib/uap10.0/HtmlAgilityPack.dll",
-        "lib/uap10.0/HtmlAgilityPack.pdb",
-        "lib/uap10.0/HtmlAgilityPack.pri",
-        "readme.md"
-      ]
-    },
-    "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
-      "sha512": "3WA9q9yVqJp222P3x1wYIGDAkpjAku0TMUaaQV22g6L67AI0LdOIrVS7Ht2vJfLHGSPVuqN94vIr15qn+HEkHw==",
-      "type": "package",
-      "path": "microsoft.bcl.asyncinterfaces/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/Microsoft.Bcl.AsyncInterfaces.targets",
-        "buildTransitive/net462/_._",
-        "lib/net462/Microsoft.Bcl.AsyncInterfaces.dll",
-        "lib/net462/Microsoft.Bcl.AsyncInterfaces.xml",
-        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.dll",
-        "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
-        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
-        "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
-        "microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
-        "microsoft.bcl.asyncinterfaces.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "Microsoft.Identity.Client/4.76.0": {
-      "sha512": "j2FtmljuCveDJ7umBVYm6Bx3iVGA71U07Dc7byGr2Hrj7XlByZSknruCBUeYN3V75nn1VEhXegxE0MerxvxrXQ==",
-      "type": "package",
-      "path": "microsoft.identity.client/4.76.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "lib/net462/Microsoft.Identity.Client.dll",
-        "lib/net462/Microsoft.Identity.Client.xml",
-        "lib/net472/Microsoft.Identity.Client.dll",
-        "lib/net472/Microsoft.Identity.Client.xml",
-        "lib/net8.0-android34.0/Microsoft.Identity.Client.aar",
-        "lib/net8.0-android34.0/Microsoft.Identity.Client.dll",
-        "lib/net8.0-android34.0/Microsoft.Identity.Client.xml",
-        "lib/net8.0-ios18.0/Microsoft.Identity.Client.dll",
-        "lib/net8.0-ios18.0/Microsoft.Identity.Client.xml",
-        "lib/net8.0/Microsoft.Identity.Client.dll",
-        "lib/net8.0/Microsoft.Identity.Client.xml",
-        "lib/netstandard2.0/Microsoft.Identity.Client.dll",
-        "lib/netstandard2.0/Microsoft.Identity.Client.xml",
-        "microsoft.identity.client.4.76.0.nupkg.sha512",
-        "microsoft.identity.client.nuspec"
-      ]
-    },
-    "Microsoft.Identity.Client.Extensions.Msal/4.76.0": {
-      "sha512": "D0n3yMTa3gnDh1usrJmyxGWKYeqbQNCWLgQ0Tswf7S6nk9YobiCOX+M2V8EX5SPqkZxpwkTT6odAhaafu3TIeA==",
-      "type": "package",
-      "path": "microsoft.identity.client.extensions.msal/4.76.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "lib/net8.0/Microsoft.Identity.Client.Extensions.Msal.dll",
-        "lib/net8.0/Microsoft.Identity.Client.Extensions.Msal.xml",
-        "lib/netstandard2.0/Microsoft.Identity.Client.Extensions.Msal.dll",
-        "lib/netstandard2.0/Microsoft.Identity.Client.Extensions.Msal.xml",
-        "microsoft.identity.client.extensions.msal.4.76.0.nupkg.sha512",
-        "microsoft.identity.client.extensions.msal.nuspec"
-      ]
-    },
-    "Microsoft.IdentityModel.Abstractions/6.35.0": {
-      "sha512": "xuR8E4Rd96M41CnUSCiOJ2DBh+z+zQSmyrYHdYhD6K4fXBcQGVnRCFQ0efROUYpP+p0zC1BLKr0JRpVuujTZSg==",
-      "type": "package",
-      "path": "microsoft.identitymodel.abstractions/6.35.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net45/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net45/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net461/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net461/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net462/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net462/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net472/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net472/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/net6.0/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/net6.0/Microsoft.IdentityModel.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.xml",
-        "microsoft.identitymodel.abstractions.6.35.0.nupkg.sha512",
-        "microsoft.identitymodel.abstractions.nuspec"
-      ]
-    },
-    "System.ClientModel/1.7.0": {
-      "sha512": "NKKA3/O6B7PxmtIzOifExHdfoWthy3AD4EZ1JfzcZU8yGZTbYrK1qvXsHUL/1yQKKqWSKgIR1Ih/yf2gOaHc4w==",
-      "type": "package",
-      "path": "system.clientmodel/1.7.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "CHANGELOG.md",
-        "DotNetPackageIcon.png",
-        "README.md",
-        "analyzers/dotnet/cs/System.ClientModel.SourceGeneration.dll",
-        "lib/net8.0/System.ClientModel.dll",
-        "lib/net8.0/System.ClientModel.xml",
-        "lib/net9.0/System.ClientModel.dll",
-        "lib/net9.0/System.ClientModel.xml",
-        "lib/netstandard2.0/System.ClientModel.dll",
-        "lib/netstandard2.0/System.ClientModel.xml",
-        "system.clientmodel.1.7.0.nupkg.sha512",
-        "system.clientmodel.nuspec"
-      ]
-    },
-    "System.IO.Hashing/8.0.0": {
-      "sha512": "ne1843evDugl0md7Fjzy6QjJrzsjh46ZKbhf8GwBXb5f/gw97J4bxMs0NQKifDuThh/f0bZ0e62NPl1jzTuRqA==",
-      "type": "package",
-      "path": "system.io.hashing/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.IO.Hashing.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.IO.Hashing.targets",
-        "lib/net462/System.IO.Hashing.dll",
-        "lib/net462/System.IO.Hashing.xml",
-        "lib/net6.0/System.IO.Hashing.dll",
-        "lib/net6.0/System.IO.Hashing.xml",
-        "lib/net7.0/System.IO.Hashing.dll",
-        "lib/net7.0/System.IO.Hashing.xml",
-        "lib/net8.0/System.IO.Hashing.dll",
-        "lib/net8.0/System.IO.Hashing.xml",
-        "lib/netstandard2.0/System.IO.Hashing.dll",
-        "lib/netstandard2.0/System.IO.Hashing.xml",
-        "system.io.hashing.8.0.0.nupkg.sha512",
-        "system.io.hashing.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Memory.Data/8.0.1": {
-      "sha512": "BVYuec3jV23EMRDeR7Dr1/qhx7369dZzJ9IWy2xylvb4YfXsrUxspWc4UWYid/tj4zZK58uGZqn2WQiaDMhmAg==",
-      "type": "package",
-      "path": "system.memory.data/8.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.Memory.Data.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.Memory.Data.targets",
-        "lib/net462/System.Memory.Data.dll",
-        "lib/net462/System.Memory.Data.xml",
-        "lib/net6.0/System.Memory.Data.dll",
-        "lib/net6.0/System.Memory.Data.xml",
-        "lib/net7.0/System.Memory.Data.dll",
-        "lib/net7.0/System.Memory.Data.xml",
-        "lib/net8.0/System.Memory.Data.dll",
-        "lib/net8.0/System.Memory.Data.xml",
-        "lib/netstandard2.0/System.Memory.Data.dll",
-        "lib/netstandard2.0/System.Memory.Data.xml",
-        "system.memory.data.8.0.1.nupkg.sha512",
-        "system.memory.data.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.Security.Cryptography.ProtectedData/4.5.0": {
-      "sha512": "wLBKzFnDCxP12VL9ANydSYhk59fC4cvOr9ypYQLPnAj48NQIhqnjdD2yhP8yEKyBJEjERWS9DisKL7rX5eU25Q==",
-      "type": "package",
-      "path": "system.security.cryptography.protecteddata/4.5.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
-        "lib/net46/System.Security.Cryptography.ProtectedData.dll",
-        "lib/net461/System.Security.Cryptography.ProtectedData.dll",
-        "lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
-        "lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
-        "lib/xamarinios10/_._",
-        "lib/xamarinmac20/_._",
-        "lib/xamarintvos10/_._",
-        "lib/xamarinwatchos10/_._",
-        "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
-        "ref/net46/System.Security.Cryptography.ProtectedData.dll",
-        "ref/net461/System.Security.Cryptography.ProtectedData.dll",
-        "ref/net461/System.Security.Cryptography.ProtectedData.xml",
-        "ref/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
-        "ref/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
-        "ref/netstandard2.0/System.Security.Cryptography.ProtectedData.xml",
-        "ref/xamarinios10/_._",
-        "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "runtimes/win/lib/net46/System.Security.Cryptography.ProtectedData.dll",
-        "runtimes/win/lib/net461/System.Security.Cryptography.ProtectedData.dll",
-        "runtimes/win/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
-        "runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll",
-        "system.security.cryptography.protecteddata.4.5.0.nupkg.sha512",
-        "system.security.cryptography.protecteddata.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
-      ]
-    },
-    "WdsfAnalyzer.Core/1.0.0": {
-      "type": "project",
-      "path": "../WdsfAnalyzer.Core/WdsfAnalyzer.Core.csproj",
-      "msbuildProject": "../WdsfAnalyzer.Core/WdsfAnalyzer.Core.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
     "net10.0": [
       "Azure.Identity >= 1.17.0",
-      "Azure.Storage.Blobs >= 12.26.0",
-      "WdsfAnalyzer.Core >= 1.0.0"
+      "Azure.Storage.Blobs >= 12.26.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fabia\\.nuget\\packages\\": {}
+    "C:\\Users\\fabianl\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Web\\WdsfAnalyzer.Web.csproj",
+      "projectUniqueName": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Web\\WdsfAnalyzer.Web.csproj",
       "projectName": "WdsfAnalyzer.Web",
-      "projectPath": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Web\\WdsfAnalyzer.Web.csproj",
-      "packagesPath": "C:\\Users\\fabia\\.nuget\\packages\\",
-      "outputPath": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Web\\obj\\",
+      "projectPath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Web\\WdsfAnalyzer.Web.csproj",
+      "packagesPath": "C:\\Users\\fabianl\\.nuget\\packages\\",
+      "outputPath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Web\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\fabia\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\fabianl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "file:///C:/Repos/OrchestrationFactory2020/PowerShellRepository/": {},
+        "https://packagefeedproxy.microsoft.io/nuget/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj": {
-              "projectPath": "C:\\Repos\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj"
+            "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj": {
+              "projectPath": "C:\\Repos\\fabian\\Analyzer\\src\\WdsfAnalyzer.Core\\WdsfAnalyzer.Core.csproj"
             }
           }
         }
@@ -1065,5 +512,17 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "The local source 'C:\\Repos\\OrchestrationFactory2020\\PowerShellRepository\\' doesn't exist."
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "The local source 'C:\\Repos\\OrchestrationFactory2020\\PowerShellRepository\\' doesn't exist."
+    }
+  ]
 }

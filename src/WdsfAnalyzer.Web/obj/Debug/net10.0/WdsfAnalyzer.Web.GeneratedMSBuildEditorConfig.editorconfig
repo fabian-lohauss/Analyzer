@@ -12,41 +12,41 @@ build_property.EntryPointFilePath =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WdsfAnalyzer.Web
 build_property.RootNamespace = WdsfAnalyzer.Web
-build_property.ProjectDir = C:\Repos\Analyzer\src\WdsfAnalyzer.Web\
+build_property.ProjectDir = C:\Repos\fabian\Analyzer\src\WdsfAnalyzer.Web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 10.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Repos\Analyzer\src\WdsfAnalyzer.Web
+build_property.MSBuildProjectDirectory = C:\Repos\fabian\Analyzer\src\WdsfAnalyzer.Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Repos/Analyzer/src/WdsfAnalyzer.Web/Pages/Error.cshtml]
+[C:/Repos/fabian/Analyzer/src/WdsfAnalyzer.Web/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repos/Analyzer/src/WdsfAnalyzer.Web/Pages/Index.cshtml]
+[C:/Repos/fabian/Analyzer/src/WdsfAnalyzer.Web/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repos/Analyzer/src/WdsfAnalyzer.Web/Pages/Privacy.cshtml]
+[C:/Repos/fabian/Analyzer/src/WdsfAnalyzer.Web/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repos/Analyzer/src/WdsfAnalyzer.Web/Pages/_CellDetail.cshtml]
+[C:/Repos/fabian/Analyzer/src/WdsfAnalyzer.Web/Pages/_CellDetail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0NlbGxEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repos/Analyzer/src/WdsfAnalyzer.Web/Pages/_ViewImports.cshtml]
+[C:/Repos/fabian/Analyzer/src/WdsfAnalyzer.Web/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repos/Analyzer/src/WdsfAnalyzer.Web/Pages/_ViewStart.cshtml]
+[C:/Repos/fabian/Analyzer/src/WdsfAnalyzer.Web/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Repos/Analyzer/src/WdsfAnalyzer.Web/Pages/Shared/_Layout.cshtml]
+[C:/Repos/fabian/Analyzer/src/WdsfAnalyzer.Web/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-8aqmi0s9f1
